@@ -1,0 +1,147 @@
+body{
+	display:flex;
+	text-align:center; /*il contenuto della pagina avrà un allineamento del testo centrale per mantenere comunque un layout disposto a colonne*/	
+	flex-direction:column;		/*impostiamo il body in modo da avere un layout a colonne*/
+}
+
+
+/*CLASSE MAIN CHE CONTIENE IL CONTENUTO AL CENTRO DELLA PAGINA OVVERO LE SEZIONI LEFT, RIGHT E CENTER*/
+.main{
+	display:flex; /*impostiamo display flex in modo da avere una maggiore libertà sul posizionamento degli elementi, in questo esercizio viene usato 
+						principalmente per mettere in evidenza il contenuto principale rispetto a le sezioni left e right*/				
+	padding:1%; /*diamo un lieve padding in modo da non avere */
+}
+/*FINE MAIN*/
+
+
+/*HEADER SECTION*/
+#header{
+	display:flex;
+	background-color:#1e1e1e;
+	border-radius: 20px 20px 20px 20px;
+	justify-content:space-between;
+	align-items:center;
+}
+.navbar{
+	list-style-type:none;
+	margin-right:15%;
+}
+.navbar a{
+	text-decoration:none;
+	color:white;
+}
+.navbar li{
+	display:inline; /*disposizione orizzontale della lista*/
+	padding-right:10%;
+	color:white;
+	font-size:25px;
+	font-family:Courier;
+}
+.navbar a:hover{
+	color:red;
+}
+
+/*FINE HEADER*/
+
+
+/*MAIN-CONTENT SECTION*/
+
+
+/*LEFT SECTION*/
+#left{
+	color:black;
+	flex:5 5 100px;
+	text-align:center;
+	height:500px;
+	overflow:scroll;
+}
+#left table{
+	margin-right:auto;
+	margin-left:auto;
+}
+.butt{
+	background-color: #a61022;
+	color: white;
+	font-family:Arial;
+	padding: 7px 7px;
+	border: none;
+	border-radius: 5px;
+	opacity:85%;
+}
+.butt:hover{
+	opacity:100%;
+}
+.bottone_info{
+	border-radius:50px;
+	font-family:Arial;
+	font-size:11px;
+	margin-left:5px;
+	background-color:blue;
+	color:white;
+	border:none;
+}
+/*SEZIONE RIGHT*/
+#right{
+	color:white;
+	padding:1%;
+	flex:5 5 100px;
+	border:solid thin grey;
+	border-radius: 20px 20px 20px 20px;
+	background-color:#1e1e1e;
+	padding-top:5%;
+}
+.bottonegiallo{
+	background-color: #FDDA0D;
+	color: black;
+	font-family:Arial;
+	padding: 7px 7px;
+	border: none;
+	border-radius: 5px;
+	opacity:85%;
+	margin-top:0.5%;
+}
+.bottonerosso{
+	background-color:#a61022;
+	color: white;
+	font-family:Arial;
+	padding: 7px 7px;
+	border: none;
+	border-radius: 5px;
+	opacity:85%;
+}
+.bottonegiallo:hover{
+	opacity:100%;
+}.bottonerosso:hover{
+	opacity:100%;
+}
+/*FINE RIGHT*/
+
+
+/*SEZIONE FOOTER*/
+.footer_title{
+	color:white;
+	border-radius: 20px 20px 20px 20px;
+	border-top:solid green;
+	border-bottom:solid blue;
+	padding: 1%;
+	font-family:Arial;
+	background-color:#1e1e1e;
+}
+
+/*FINE FOOTER*/
+
+/*STILIZZAZIONE SCROOLLBAR*/
+::-webkit-scrollbar{
+	width:10px;
+	height:10px;
+}
+::-webkit-scrollbar-track {
+  background: white;
+}
+::-webkit-scrollbar-thumb {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a61022;
+}

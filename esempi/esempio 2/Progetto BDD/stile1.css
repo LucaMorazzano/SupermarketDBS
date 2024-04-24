@@ -1,0 +1,232 @@
+body{
+	display:flex;
+	text-align:center; /*il contenuto della pagina avrà un allineamento del testo centrale per mantenere comunque un layout disposto a colonne*/
+	flex-direction:column;		/*impostiamo il body in modo da avere un layout a colonne*/
+}
+
+
+/*CLASSE MAIN CHE CONTIENE IL CONTENUTO AL CENTRO DELLA PAGINA OVVERO LE SEZIONI LEFT, RIGHT E CENTER*/
+.main{
+	display:flex; /*impostiamo display flex in modo da avere una maggiore libertà sul posizionamento degli elementi, in questo esercizio viene usato
+						principalmente per mettere in evidenza il contenuto principale rispetto a le sezioni left e right*/
+	padding:1%; /*diamo un lieve padding in modo da non avere */
+}
+/*FINE MAIN*/
+
+
+/*HEADER SECTION*/
+#header{
+	display:flex;
+	background-color:#1e1e1e;
+	border-radius: 20px 20px 20px 20px;
+	justify-content:space-between;
+	align-items:center;
+}
+.navbar{
+	list-style-type:none;
+	margin-right:15%;
+}
+.navbar a{
+	text-decoration:none;
+	color:white;
+}
+.navbar li{
+	display:inline; /*disposizione orizzontale della lista*/
+	padding-right:10%;
+	color:white;
+	font-size:25px;
+	font-family:Courier;
+}
+.navbar a:hover{
+	color:red;
+}
+
+/*FINE HEADER*/
+
+
+/*MAIN-CONTENT SECTION*/
+#center{
+	color:black;
+	flex:5 5 100px;
+	height:720px;
+
+}
+/*FINE MAIN-CONTENT*/
+
+#contenitorefilm{
+	background-color:white;
+	border-style:solid;
+	border-color: orange;
+	color:black;
+	padding:0%;
+	flex: 1 1 100px;
+	margin-bottom:1%;
+	height:230px;
+	width:96%;
+}
+#contenitorefilm img{
+	width:235px;
+			  height:230px;
+			  float:left;
+		   }
+
+#contenitore {
+	    background-color:white;
+        border-style:solid;
+		border-color: orange;
+		color:black;
+		padding-top:1%;
+		padding-left:1%;
+		padding-right:1%;
+		padding-bottom: 2%;
+		flex: 1 1 100px;
+		margin-bottom:4%;
+		margin-top:20px;
+		height:350px;
+		width:96%;
+}
+#contenitore img{
+	          width:235px;
+						height:235px;
+						float:left;
+					 }
+#contenitore h3{
+	color:black;
+  margin-left:10px;
+	align-items: left;
+}
+
+#contenitore1{
+	background-color:orange;
+	border-style:solid;	
+	border-color: green;
+	color:black;
+	padding-left:1%;
+	padding-right:1%;
+	margin-bottom:5%;
+	margin-top: 10%;
+	justify-content:space-between;
+	flex: 1 1 100px;
+	height:130px;
+	width:98%;
+
+}
+
+#contenitore1 h5{
+	float: left;
+	display:inline;
+	padding-right:10%;
+	justify-content: center;
+}
+#contenitore1 h1{
+	color:aqua;
+}
+
+#contenitore1 p{
+  font-size: 16px;
+	text-align: center;
+  padding-top:1px;
+	padding-left:5%;
+	padding-right:5%;
+}
+
+
+#contenitore2 img{
+            border-radius: 20px 20px 20px 20px;
+	          width:200px;
+						height:200px;
+						float:left;
+					 }
+#contenitore2 h3{
+	padding-left:5%;
+	color:black;
+	align-items:;
+	margin-left: 80%;
+  margin-bottom: 20%;
+}
+
+#contenitore3 {
+	  background-color:orange;
+		color:green;
+		padding-top:1%;
+		padding-bottom:1%;
+		padding-left:1%;
+		padding-right:1%;
+		border-radius: 20px 20px 20px 20px;
+		flex: 1 1 100px;
+		height:200px;
+		width:50px;
+		align-items:right;
+}
+
+/*SEZIONE FOOTER*/
+.footer_title{
+	color:white;
+	border-radius: 20px 20px 20px 20px;
+	border-top:solid green;
+	border-bottom:solid blue;
+	padding: 1%;
+	font-family:Arial;
+	background-color:#1e1e1e;
+}
+#footer{
+	background-color:white;
+	color:black;
+	display:flex;
+	justify-content:space-around;
+	align-items:center;
+}
+#footer .form_recensioni{
+	text-align:justify;
+	margin-right:5%;
+}
+#footer .form_recensioni h4{
+	width:250px;
+}
+.form_recensioni select{
+	margin-bottom:2%;
+}
+#footer .boxrecensioni{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	overflow:scroll;
+}
+#footer .boxrecensioni .recensione{
+	color:black;
+	margin-left:5%;
+}
+
+/*FINE FOOTER*/
+
+
+/*qui utilizziamo una media query per il display, quando le dimensioni del display o della finestra di visualizzazione scendono sotto gli 800px di larghezza
+allora il contenuto si disponde lungo una sola colonna avente tante righe quanti sono i vari div utilizzati per creare il layout iniziale*/
+@media all and (max-width: 800px){ /*da una disposizione in colonna mettendo in evidenza la il contenuto principale quando si riducono le dimensioni della finestra di visualizzazione*/
+	.main{
+		flex-direction:column; /*impostiamo il layout degli elementi della classe main a colonna*/
+	}
+	#center{
+		padding:5%; /*padding per non avere il contenuto di questa sezione molto vicino alle estremità*/
+	}
+	#header{
+		flex-direction:column; /*in questo modo gli elementi dell'header si disporranno in colonna al rimpicciolirsi della finestra di visualizzazione*/
+		align-items:center;
+	}
+}
+
+/*STILIZZAZIONE SCROOLLBAR*/
+::-webkit-scrollbar{
+	width:10px;
+	height:10px;
+}
+::-webkit-scrollbar-track {
+  background: white;
+}
+::-webkit-scrollbar-thumb {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a61022;
+}
