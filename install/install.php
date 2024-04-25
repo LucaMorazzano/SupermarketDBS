@@ -65,7 +65,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				fornitore VARCHAR(20),
 				prezzo REAL,
 				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino),
-				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso),
+				id_reso INTEGER REFERENCES Reso(id_reso),
 				PRIMARY KEY(id_prodotto)
 			)";
 			echo $query;
@@ -111,7 +111,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				cognome VARCHAR(20),
 				data_assunzione VARCHAR(20),
 				data_scadenza VARCHAR(20),
-				stato ENUM('in corso', 'rapporto concluso'),
 				retribuzione REAL,
 				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
 				PRIMARY KEY(id_dipendente)
@@ -252,11 +251,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			} else {
 				echo "<h2 style=\"color:red\">Errore creazione tabella report: " . mysqli_error($connection) . "</h2>";
 			}
-
-
-
-			
+//POPOLAMENTO TABELLE
+			require_once("popola.php");
+			popola("prodotti","Prodotto",$connection);
 			$connection->close();
+			
 		?>
 	</body>
 </html>
