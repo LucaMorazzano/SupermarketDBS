@@ -13,6 +13,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<body>
 		
 		<?php
+//funzione fopen
 			function fileopen($filename) {
 				$filepath = "Dataset/$filename.csv";
 				
@@ -27,6 +28,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				return $file;
 			}
 
+//funzione popola
 			function popola($filename,$tabella,$connection) {
 				$file=fileopen($filename);
 				$skipfirstrow=true;
@@ -46,10 +48,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 							$prezzo=$row[3];
 
 							$query="INSERT INTO $tabella(id_prodotto,nome,fornitore,prezzo,id_magazzino,id_reso) VALUES ($id, '$nome', '$fornitore', $prezzo, 0,0)";
-							if(!mysqli_query($connection,$query)){
-								echo "<span style=\"color:red\">$query <b> $connection->error </b></span>";
-								return false;
-							}
 						}
 //tabella dipendente
 						if($tabella=="dipendente"){					
@@ -62,12 +60,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 							$retribuzione=$row[6];
 
 							$query="INSERT INTO $tabella(id_dipendente,ruolo,nome,cognome,data_assunzione,data_scadenza,retribuzione,id_punto_vendita) VALUES ($id, '$ruolo','$nome', '$cognome', '$data_a', '$data_s', $retribuzione, 0)";
-							if(!mysqli_query($connection,$query)){
-								echo "<span style=\"color:red\">$query <b> $connection->error </b></span>";
-								return false;
-							}
 						}
-					}
+//tabella punto vendita
+
+
+
+
+//invio query
+						if(!mysqli_query($connection,$query)){
+							echo "<span style=\"color:red\">$query <b> $connection->error </b></span>";
+							return false;
+						}
+
+
+					} //fine while
+					
 				} 
 				else {
 					echo "Errore nell'apertura del file $filename.";
