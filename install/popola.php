@@ -47,7 +47,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 							$query="INSERT INTO $tabella(id_prodotto,nome,fornitore,prezzo,id_magazzino,id_reso) VALUES ($id, '$nome', '$fornitore', $prezzo, 0,0)";
 							if(!mysqli_query($connection,$query)){
-								echo "<span style=\"color:red\">$query</span>";
+								echo "<span style=\"color:red\">$query <b> $connection->error </b></span>";
 								return false;
 							}
 						}
@@ -61,9 +61,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 							$data_s=$row[5];
 							$retribuzione=$row[6];
 
-							$query="INSERT INTO $tabella(id_dipendente,ruolo,nome,cognome,data_assunzione,data_scadenza,id_punto_vendita) VALUES ($id, '$ruolo','$nome', '$cognome', '$data_a', '$data_s', $retribuzione, 0)";
+							$query="INSERT INTO $tabella(id_dipendente,ruolo,nome,cognome,data_assunzione,data_scadenza,retribuzione,id_punto_vendita) VALUES ($id, '$ruolo','$nome', '$cognome', '$data_a', '$data_s', $retribuzione, 0)";
 							if(!mysqli_query($connection,$query)){
-								echo "<span style=\"color:red\">$query</span>";
+								echo "<span style=\"color:red\">$query <b> $connection->error </b></span>";
 								return false;
 							}
 						}

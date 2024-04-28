@@ -262,7 +262,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				echo "<h2 style=\"color:green\">popolamento dipendete riuscito</h2>";
 			else 
 				echo "<h2 style=\"color:red\">errore popolamento dipendente</h2>";
-			
+
 			$connection->close();
 			
 		?>
