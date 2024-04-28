@@ -30,39 +30,50 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			function popola($filename,$tabella,$connection) {
 				$file=fileopen($filename);
 				$skipfirstrow=true;
-				$error=0;
+
 				if ($file) {
-					while(!feof($file)){
-						$row = fgetcsv($file);
+					while($row = fgetcsv($file)){
 
 						if($skipfirstrow){
 							$skipfirstrow=false;
 							continue;
 						}
-
-						if($tabella=="Prodotto"){
+//tabella prodotto
+						if($tabella=="prodotto"){
 							$id=$row[0]; 
 							$nome=$row[1]; 
 							$fornitore=$row[2];  
 							$prezzo=$row[3];
 
 							$query="INSERT INTO $tabella(id_prodotto,nome,fornitore,prezzo,id_magazzino,id_reso) VALUES ($id, '$nome', '$fornitore', $prezzo, 0,0)";
-							echo $query;
-							if(!mysqli_query($connection,$query))
-								$error++;
+							if(!mysqli_query($connection,$query)){
+								echo "<span style=\"color:red\">$query</span>";
+								return false;
+							}
 						}
+//tabella dipendente
+						if($tabella=="dipendente"){					
+							$id=$row[0];
+							$ruolo=$row[1];
+							$nome=$row[2];
+							$cognome=$row[3];
+							$data_a=$row[4];
+							$data_s=$row[5];
+							$retribuzione=$row[6];
 
+							$query="INSERT INTO $tabella(id_dipendente,ruolo,nome,cognome,data_assunzione,data_scadenza,id_punto_vendita) VALUES ($id, '$ruolo','$nome', '$cognome', '$data_a', '$data_s', $retribuzione, 0)";
+							if(!mysqli_query($connection,$query)){
+								echo "<span style=\"color:red\">$query</span>";
+								return false;
+							}
+						}
 					}
-
-					if($error==0)
-						echo "<h2 style=\"color:green\">popolamento $tabella riuscito</h2>";
-					else 
-						echo "<h2 style=\"color:red\">errore popolamento $tabella</h2>";
-					
-					fclose($file);
-				} else 
+				} 
+				else {
 					echo "Errore nell'apertura del file $filename.";
-
+					return false;
+				}
+				return true;
 			}
         ?>
         

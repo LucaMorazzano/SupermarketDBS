@@ -1,101 +1,101 @@
-id,nome,fornitore,prezzo
-1,Pasta Barilla,Barilla,1.50
-2,Pomodori San Marzano,Campari,2.00
-3,Olio Extra Vergine di Oliva,Bertolli,8.50
-4,Acqua Minerale San Benedetto,San Benedetto,0.80
-5,Latte Parmalat,Parmalat,1.20
-6,Prosciutto di Parma,Ferrari,20.00
-7,Pane Casereccio,Mulino Bianco,2.50
-8,Birra Peroni,Peroni,1.80
-9,Cioccolato Lindt,Lindt,3.50
-10,Caffè Lavazza,Lavazza,4.50
-11,Spaghetti De Cecco,De Cecco,1.70
-12,Pomodori Pelati,Conserve Italia,1.90
-13,Olio di Semi di Girasole,Carapelli,3.00
-14,Acqua Tonica Schweppes,Schweppes,1.00
-15,Latte di Mandorla Alpro,Alpro,2.50
-16,Salame Felino,Levoni,18.00
-17,Focaccia Genovese,Motta,3.50
-18,Birra Moretti,Moretti,1.90
-19,Cioccolato Ferrero Rocher,Ferrero,5.00
-20,Caffè Illy,Illy,5.00
-21,Fusilli Barilla,Barilla,1.60
-22,Pomodorini Gialli,Agromonte,2.50
-23,Olio Extra Vergine di Oliva,Galantino,9.00
-24,Acqua Minerale Levissima,Levissima,0.70
-25,Latte Bio,Granarolo,1.30
-26,Prosciutto Cotto,Strolghino di Culatello,16.00
-27,Fette Biscottate,Plasmon,2.20
-28,Birra Ichnusa,Ichnusa,2.00
-29,Cioccolato Cote d'Or,Cote d'Or,3.20
-30,Caffè Vergnano,Vergnano,4.70
-31,Rigatoni De Cecco,De Cecco,1.80
-32,Pomodori Pachino,Pomì,2.30
-33,Olio di Oliva Intenso,Carapelli,3.50
-34,Acqua S.Pellegrino,S.Pellegrino,0.90
-35,Latte di Soia,Alpro,2.40
-36,Salame Napoli,Levoni,17.00
-37,Focaccia Barese,Motta,3.60
-38,Birra Peroni Rossa,Peroni,2.10
-39,Cioccolato Lindor,Lindt,4.00
-40,Caffè Lavazza Decaffeinato,Lavazza,5.50
-41,Linguine Garofalo,Garofalo,1.85
-42,Pomodori Ramati,Agromonte,2.40
-43,Olio Extra Vergine di Oliva,Monini,8.80
-44,Acqua Naturale Levissima,Levissima,0.65
-45,Latte di Avena,Oatly,2.60
-46,Prosciutto Crudo San Daniele,San Daniele,22.00
-47,Pane Integrale,Mulino Bianco,3.00
-48,Birra Nastro Azzurro,Nastro Azzurro,2.20
-49,Cioccolato Toblerone,Toblerone,4.50
-50,Caffè Segafredo,Segafredo,4.80
-51,Tagliatelle De Cecco,De Cecco,1.90
-52,Pomodori Datterini,Pomì,2.50
-53,Olio Extra Vergine di Oliva,Colavita,8.60
-54,Acqua Tonica Fever-Tree,Fever-Tree,1.10
-55,Latte di Riso,Alpro,2.70
-56,Speck Alto Adige,Levoni,19.00
-57,Focaccia Pugliese,Motta,3.70
-58,Birra Menabrea,Menabrea,2.30
-59,Cioccolato Milka,Milka,3.00
-60,Caffè Borbone,Borbone,5.20
-61,Mezze Maniche Garofalo,Garofalo,1.75
-62,Pomodori Cuore di Bue,Agromonte,2.60
-63,Olio Extra Vergine di Oliva,Geraci,8.40
-64,Acqua Tonica 1724,1724,1.20
-65,Latte di Cocco,Alpro,2.80
-66,Prosciutto Serrano,Serrano,21.00
-67,Pane ai Cereali,Mulino Bianco,3.10
-68,Birra La Rossa,Baladin,2.40
-69,Cioccolato Kinder Bueno,Kinder,2.70
-70,Caffè Pellini,Pellini,5.00
-71,Cavatelli De Cecco,De Cecco,1.95
-72,Pomodori Roma,Pomì,2.70
-73,Olio Extra Vergine di Oliva,Frantoio,8.90
-74,Acqua Tonica Fentimans,Fentimans,1.15
-75,Latte di Mandorla,Provamel,2.90
-76,Prosciutto Spagnolo,5J,23.00
-77,Fette Biscottate Integrali,Plasmon,2.40
-78,Birra Leffe,Leffe,2.50
-79,Cioccolato Lindt Excellence,Lindt,4.20
-80,Caffè Kimbo,Kimbo,4.90
-81,Trofie Barilla,Barilla,1.55
-82,Pomodori Gialli,Agromonte,2.70
-83,Olio Extra Vergine di Oliva,San Giuliano,8.70
-84,Acqua Tonica Britvic,Britvic,1.25
-85,Latte di Avena,Provamel,2.85
-86,Prosciutto Spagnolo Pata Negra,Pata Negra,25.00
-87,Pane di Altamura,Mulino Bianco,3.20
-88,Birra Guinness,Guinness,2.60
-89,Cioccolato Ritter Sport,Ritter Sport,3.50
-90,Caffè Musetti,Musetti,5.40
-91,Orzo De Cecco,De Cecco,1.40
-92,Pomodori San Marzano BIO,Pomì,3.00
-93,Olio Extra Vergine di Oliva,Solivo,8.50
-94,Acqua Tonica Lurisia,Lurisia,1.30
-95,Latte di Nocciola,Oatly,3.00
-96,Prosciutto di Modena,Levoni,18.50
-97,Focaccia alla Cipolla,Motta,3.80
-98,Birra Stella Artois,Stella Artois,2.70
-99,Cioccolato Lindt Swiss Classic,Lindt,4.30
-100,Caffè Vergnano Decaffeinato,Vergnano,6.00
+id, nome, fornitore, prezzo
+1, Pasta Barilla, Barilla, 1.50
+2, Pomodori San Marzano, Campari, 2.00
+3, Olio Extra Vergine di Oliva, Bertolli, 8.50
+4, Acqua Minerale San Benedetto, San Benedetto, 0.80
+5, Latte Parmalat, Parmalat, 1.20
+6, Prosciutto di Parma, Ferrari, 20.00
+7, Pane Casereccio, Mulino Bianco, 2.50
+8, Birra Peroni, Peroni, 1.80
+9, Cioccolato Lindt, Lindt, 3.50
+10, Caffe Lavazza, Lavazza, 4.50
+11, Spaghetti De Cecco, De Cecco, 1.70
+12, Pomodori Pelati, Conserve Italia, 1.90
+13, Olio di Semi di Girasole, Carapelli, 3.00
+14, Acqua Tonica Schweppes, Schweppes, 1.00
+15, Latte di Mandorla Alpro, Alpro, 2.50
+16, Salame Felino, Levoni, 18.00
+17, Focaccia Genovese, Motta, 3.50
+18, Birra Moretti, Moretti, 1.90
+19, Cioccolato Ferrero Rocher, Ferrero, 5.00
+20, Caffe Illy, Illy, 5.00
+21, Fusilli Barilla, Barilla, 1.60
+22, Pomodorini Gialli, Agromonte, 2.50
+23, Olio Extra Vergine di Oliva, Galantino, 9.00
+24, Acqua Minerale Levissima, Levissima, 0.70
+25, Latte Bio, Granarolo, 1.30
+26, Prosciutto Cotto, Strolghino di Culatello, 16.00
+27, Fette Biscottate, Plasmon, 2.20
+28, Birra Ichnusa, Ichnusa, 2.00
+29, Cioccolato Cote dOr, Cote dOr, 3.20
+30, Caffe Vergnano, Vergnano, 4.70
+31, Rigatoni De Cecco, De Cecco, 1.80
+32, Pomodori Pachino, Pomo, 2.30
+33, Olio di Oliva Intenso, Carapelli, 3.50
+34, Acqua S.Pellegrino, S.Pellegrino, 0.90
+35, Latte di Soia, Alpro, 2.40
+36, Salame Napoli, Levoni, 17.00
+37, Focaccia Barese, Motta, 3.60
+38, Birra Peroni Rossa, Peroni, 2.10
+39, Cioccolato Lindor, Lindt, 4.00
+40, Caffe Lavazza Decaffeinato, Lavazza, 5.50
+41, Linguine Garofalo, Garofalo, 1.85
+42, Pomodori Ramati, Agromonte, 2.40
+43, Olio Extra Vergine di Oliva, Monini, 8.80
+44, Acqua Naturale Levissima, Levissima, 0.65
+45, Latte di Avena, Oatly, 2.60
+46, Prosciutto Crudo San Daniele, San Daniele, 22.00
+47, Pane Integrale, Mulino Bianco, 3.00
+48, Birra Nastro Azzurro, Nastro Azzurro, 2.20
+49, Cioccolato Toblerone, Toblerone, 4.50
+50, Caffe Segafredo, Segafredo, 4.80
+51, Tagliatelle De Cecco, De Cecco, 1.90
+52, Pomodori Datterini, Pomo, 2.50
+53, Olio Extra Vergine di Oliva, Colavita, 8.60
+54, Acqua Tonica Fever-Tree, Fever-Tree, 1.10
+55, Latte di Riso, Alpro, 2.70
+56, Speck Alto Adige, Levoni, 19.00
+57, Focaccia Pugliese, Motta, 3.70
+58, Birra Menabrea, Menabrea, 2.30
+59, Cioccolato Milka, Milka, 3.00
+60, Caffe Borbone, Borbone, 5.20
+61, Mezze Maniche Garofalo, Garofalo, 1.75
+62, Pomodori Cuore di Bue, Agromonte, 2.60
+63, Olio Extra Vergine di Oliva, Geraci, 8.40
+64, Acqua Tonica 1724, 1724, 1.20
+65, Latte di Cocco, Alpro, 2.80
+66, Prosciutto Serrano, Serrano, 21.00
+67, Pane ai Cereali, Mulino Bianco, 3.10
+68, Birra La Rossa, Baladin, 2.40
+69, Cioccolato Kinder Bueno, Kinder, 2.70
+70, Caffe Pellini, Pellini, 5.00
+71, Cavatelli De Cecco, De Cecco, 1.95
+72, Pomodori Roma, Pomo, 2.70
+73, Olio Extra Vergine di Oliva, Frantoio, 8.90
+74, Acqua Tonica Fentimans, Fentimans, 1.15
+75, Latte di Mandorla, Provamel, 2.90
+76, Prosciutto Spagnolo, 5J, 23.00
+77, Fette Biscottate Integrali, Plasmon, 2.40
+78, Birra Leffe, Leffe, 2.50
+79, Cioccolato Lindt Excellence, Lindt, 4.20
+80, Caffe Kimbo, Kimbo, 4.90
+81, Trofie Barilla, Barilla, 1.55
+82, Pomodori Gialli, Agromonte, 2.70
+83, Olio Extra Vergine di Oliva, San Giuliano, 8.70
+84, Acqua Tonica Britvic, Britvic, 1.25
+85, Latte di Avena, Provamel, 2.85
+86, Prosciutto Spagnolo Pata Negra, Pata Negra, 25.00
+87, Pane di Altamura, Mulino Bianco, 3.20
+88, Birra Guinness, Guinness, 2.60
+89, Cioccolato Ritter Sport, Ritter Sport, 3.50
+90, Caffe Musetti, Musetti, 5.40
+91, Orzo De Cecco, De Cecco, 1.40
+92, Pomodori San Marzano BIO, Pomo, 3.00
+93, Olio Extra Vergine di Oliva, Solivo, 8.50
+94, Acqua Tonica Lurisia, Lurisia, 1.30
+95, Latte di Nocciola, Oatly, 3.00
+96, Prosciutto di Modena, Levoni, 18.50
+97, Focaccia alla Cipolla, Motta, 3.80
+98, Birra Stella Artois, Stella Artois, 2.70
+99, Cioccolato Lindt Swiss Classic, Lindt, 4.30
+100, Caffe Vergnano Decaffeinato, Vergnano, 6.00

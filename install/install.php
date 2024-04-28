@@ -253,7 +253,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			}
 //POPOLAMENTO TABELLE
 			require_once("popola.php");
-			popola("prodotti","Prodotto",$connection);
+			if(popola("prodotti","prodotto",$connection))
+				echo "<h2 style=\"color:green\">popolamento prodotto riuscito</h2>";
+				else 
+				echo "<h2 style=\"color:red\">errore popolamento prodotto</h2>";
+
+			if(popola("dipendenti","dipendente",$connection))
+				echo "<h2 style=\"color:green\">popolamento dipendete riuscito</h2>";
+			else 
+				echo "<h2 style=\"color:red\">errore popolamento dipendente</h2>";
+			
 			$connection->close();
 			
 		?>
