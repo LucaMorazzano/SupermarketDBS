@@ -48,6 +48,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				tot_vendite INTEGER,
 				tot_incasso REAL,
 				incasso_giornaliero REAL,
+				incasso_settimanale REAL, 
 				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
 				id_capo_divisione INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
 				PRIMARY KEY(id_punto_vendita)
@@ -64,7 +65,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				nome VARCHAR(20),
 				fornitore VARCHAR(20),
 				prezzo REAL,
-				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino),
 				id_reso INTEGER REFERENCES Reso(id_reso),
 				PRIMARY KEY(id_prodotto)
 			)";
@@ -102,6 +102,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				echo "<h2 style=\"color:green\">Tabella magazzino creata</h2>";
 			} else {
 				echo "<h2 style=\"color:red\">Errore creazione tabella magazzino: " . mysqli_error($connection) . "</h2>";
+			}
+//tabella in_magazzino
+			$query = "CREATE TABLE IF NOT EXISTS in_magazzino(
+				id_in_magazzino INTEGER NOT NULL AUTO_INCREMENT,
+				quantita INTEGER NOT NULL,
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
+				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino),
+				PRIMARY KEY(id_in_magazzino)
+			)";
+			echo $query;
+			if (mysqli_query($connection, $query)) {
+				echo "<h2 style=\"color:green\">Tabella in magazzino creata</h2>";
+			} else {
+				echo "<h2 style=\"color:red\">Errore creazione tabella in magazzino: " . mysqli_error($connection) . "</h2>";
 			}
 //tabella dipendente
 			$query = "CREATE TABLE IF NOT EXISTS Dipendente(
@@ -262,6 +276,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				echo "<h2 style=\"color:green\">popolamento dipendete riuscito</h2>";
 			else 
 				echo "<h2 style=\"color:red\">errore popolamento dipendente</h2>";
+
+			if(popola("responsabili","responsabile",$connection))
+				echo "<h2 style=\"color:green\">popolamento responsabile riuscito</h2>";
+			else 
+				echo "<h2 style=\"color:red\">errore popolamento responsabile</h2>";
+
+			if(build_pv($connection))
+				echo "<h2 style=\"color:green\">popolamento punti vendita riuscito</h2>";
+			else 
+				echo "<h2 style=\"color:red\">errore popolamento punti vendita</h2>";
 
 			$connection->close();
 			
