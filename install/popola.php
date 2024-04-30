@@ -117,13 +117,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				$cdiv=getCapiDivisione($connection);
 				$adv= getAddettiVendita($connection);
 
-				$isp_arr=sql_to_array($ispettori);
-				$i=0;
-				$cdiv_arr=sql_to_array($cdiv);
-				$j=0;
 
 				if($gestori && $ispettori && $cdiv && $adv){
 					$id=100;
+
+					$isp_arr=sql_to_array($ispettori);
+					$i=0;
+					$cdiv_arr=sql_to_array($cdiv);
+					$j=0;
 
 					foreach($gestori as $gestore){
 						$id_gestore=$gestore['id_dipendente'];
@@ -140,7 +141,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 						$residenza=getResidenza();
 
 						$query="INSERT INTO punto_vendita(id_punto_vendita, residenza, tot_vendite, tot_incasso, tot_dipendenti, id_ispettore, id_capo_divisione ) VALUES ($id, '$residenza', 0, 0, 1,  $id_ispettore, $id_capo_divisione)";
-						$id++;
 						if(!mysqli_query($connection,$query)){
 							echo "$query ... $connection->error";
 							return false;
@@ -149,6 +149,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 						$query="UPDATE dipendente 
 									SET id_punto_vendita = $id
 									WHERE id_dipendente LIKE $id_gestore";
+						$id++;
 						if(!mysqli_query($connection,$query)){
 							echo "$query ... $connection->error";
 							return false;
