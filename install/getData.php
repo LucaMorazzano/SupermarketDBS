@@ -89,6 +89,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 $index=rand(0,sizeof($residenza)-1);
                 return $residenza[$index];
             }
+//convert sql to array
+			function sql_to_array($sqlobject){
+				$result=array();
+				foreach($sqlobject as $sqlelement)
+						array_push($result, $sqlelement);
+				return $result;
+			}
 		?>
 	</body>
 </html>

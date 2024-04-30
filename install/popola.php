@@ -116,14 +116,26 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				$ispettori=getIspettori($connection);
 				$cdiv=getCapiDivisione($connection);
 				$adv= getAddettiVendita($connection);
-				var_dump($ispettori);
+
+				$isp_arr=sql_to_array($ispettori);
+				$i=0;
+				$cdiv_arr=sql_to_array($cdiv);
+				$j=0;
+
 				if($gestori && $ispettori && $cdiv && $adv){
 					$id=100;
+
 					foreach($gestori as $gestore){
 						$id_gestore=$gestore['id_dipendente'];
-						//sistemare ogni pv ha un isp e un cd 
-						$id_ispettore=0;
-						$id_capo_divisione=0;
+						
+						if($i== mysqli_num_rows($ispettori))
+							$i=0;
+						$id_ispettore=$isp_arr[$i]['id_responsabile'];
+						$i++;
+						if($j== mysqli_num_rows($cdiv))
+							$j=0;
+						$id_capo_divisione=$cdiv_arr[$j]['id_responsabile'];
+						$j++;
 						
 						$residenza=getResidenza();
 
