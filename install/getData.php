@@ -45,28 +45,28 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				}
 			}
 //get Punti vendita
-    function getPuntiVendita($residenza,$connection){
-        if($residenza=="tutti")
-            $query= "SELECT * FROM punto_vendita";
-        else
-            $query= "SELECT * FROM punto_vendita WHERE residenza LIKE '$residenza'";
-        if($res= mysqli_query($connection,$query))
-            return $res;
-        else{
-            echo" $query...$connection->error<br />";
-            return false;
-        }
-    }
-//get adv
-    function getAddettiVendita($connection){
-        $query= "SELECT * FROM dipendente WHERE ruolo LIKE 'addetto vendita'";
+			function getPuntiVendita($residenza,$connection){
+				if($residenza=="tutti")
+					$query= "SELECT * FROM punto_vendita";
+				else
+					$query= "SELECT * FROM punto_vendita WHERE residenza LIKE '$residenza'";
 				if($res= mysqli_query($connection,$query))
 					return $res;
 				else{
 					echo" $query...$connection->error<br />";
 					return false;
 				}
-    }
+			}
+//get adv
+			function getAddettiVendita($connection){
+				$query= "SELECT * FROM dipendente WHERE ruolo LIKE 'addetto vendite'";
+				if($res= mysqli_query($connection,$query))
+					return $res;
+				else{
+					echo" $query...$connection->error<br />";
+					return false;
+				}
+			}
 //getResidenza
             function getResidenza(){
                 $residenza = array(

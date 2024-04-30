@@ -102,17 +102,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				$ispettori=getIspettori($connection);
 				$cdiv=getCapiDivisione($connection);
 				$adv= getAddettiVendita($connection);
+				$i=0; $j=0;
 
 				if($gestori && $ispettori && $cdiv && $adv){
 					$id=100;
 					foreach($gestori as $gestore){
 						$id_gestore=$gestore['id_dipendente'];
-						$id_ispettore=rand(1,mysqli_num_rows($ispettori));
-						$id_cd=rand(1,mysqli_num_rows($cdiv));
+						if($i == mysqli_num_rows($ispettori))
+							$i=0;
+						mysqli_data_seek($ispettori, $i);
+						$id_ispettore=$ispettori['id_responsabile'];
+						$i++;
 						$residenza=getResidenza();
 
-						$query="INSERT INTO punto_vendita(id_punto_vendita, residenza, tot_vendite, tot_incasso, incasso_giornaliero, incasso_settimanale, id_ispettore
-						, id_capo_divisione  ) VALUES ($id, '$residenza', 0, 0, 0, 0, $id_ispettore, $id_cd )";
+						$query="INSERT INTO punto_vendita(id_punto_vendita, residenza, tot_vendite, tot_incasso, incasso_giornaliero, incasso_settimanale, id_ispettore ) VALUES ($id, '$residenza', 0, 0, 0, 0, $id_ispettore)";
 						$id++;
 						if(!mysqli_query($connection,$query)){
 							echo "$query ... $connection->error";
@@ -129,19 +132,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 					}
 					if(!insert_adv($adv,$connection))
 							return false;
+					if(!insert_magazzino($connection))
+						return false;
 				}
 				else
 					return false;
 				return true;
 			}
-
+//inserimento addetti vendita
 			function insert_adv($advs,$connection){
 				$punti_vendita= getPuntiVendita("tutti",$connection);
-				//problema qui me ne resttuisce 40
-				echo mysqli_num_rows($punti_vendita);
 				foreach($advs as $adv ){
 					$id=$adv['id_dipendente'];
-					$id_pv=rand(100, 100+ mysqli_num_rows($punti_vendita));
+					$id_pv=rand(100, 99+ mysqli_num_rows($punti_vendita));
 					$query= "UPDATE dipendente 
 								SET id_punto_vendita = $id_pv
 								WHERE id_dipendente LIKE $id";
@@ -152,6 +155,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				}
 				return true;
 			}
+//popola magazzini
+			function insert_magazzino($connection){
+				$punti_vendita=getPuntiVendita("tutti", $connection);
+				foreach($punti_vendita as $pv){
+					$id_pv= $pv['id_punto_vendita'];
+					$capienza=rand(100,800);
+					$query="INSERT INTO magazzino(capienza, spazio_disponibile, id_punto_vendita) VALUES ($capienza, $capienza, $id_pv)";
+					if(!mysqli_query($connection,$query)){
+						echo "$query ... $connection->error";
+						return false;
+					}
+				}
+				return true;
+			}
+
 		?>
 
         

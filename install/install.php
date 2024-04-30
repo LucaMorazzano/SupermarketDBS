@@ -49,8 +49,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				tot_incasso REAL,
 				incasso_giornaliero REAL,
 				incasso_settimanale REAL, 
-				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
-				id_capo_divisione INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
+				id_ispettore INTEGER NOT NULL DEFAULT -1 REFERENCES Responsabile(id_responsabile) ON UPDATE CASCADE ON DELETE SET DEFAULT,
+				id_capo_divisione INTEGER NOT NULL DEFAULT -1 REFERENCES Responsabile(id_responsabile) ON UPDATE CASCADE ON DELETE SET DEFAULT,
 				PRIMARY KEY(id_punto_vendita)
 			)";
 			echo $query;
@@ -65,7 +65,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				nome VARCHAR(20),
 				fornitore VARCHAR(20),
 				prezzo REAL,
-				id_reso INTEGER REFERENCES Reso(id_reso),
+				id_reso INTEGER REFERENCES Reso(id_reso) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_prodotto)
 			)";
 			echo $query;
@@ -79,8 +79,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_vendita INTEGER NOT NULL AUTO_INCREMENT,
 				data VARCHAR(20),
 				quantita INTEGER NOT NULL, 
-				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
-				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_vendita)
 			)";
 			echo $query;
@@ -94,7 +94,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_magazzino INTEGER NOT NULL AUTO_INCREMENT,
 				capienza INTEGER NOT NULL,
 				spazio_disponibile INTEGER NOT NULL, 
-				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
+				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_magazzino)
 			)";
 			echo $query;
@@ -107,8 +107,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$query = "CREATE TABLE IF NOT EXISTS in_magazzino(
 				id_in_magazzino INTEGER NOT NULL AUTO_INCREMENT,
 				quantita INTEGER NOT NULL,
-				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
-				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino),
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_in_magazzino)
 			)";
 			echo $query;
@@ -126,7 +126,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				data_assunzione VARCHAR(20),
 				data_scadenza VARCHAR(20),
 				retribuzione REAL,
-				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
+				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_dipendente)
 			)";
 			echo $query;
@@ -140,7 +140,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_reso INTEGER NOT NULL AUTO_INCREMENT,
 				n_prodotti INTEGER NOT NULL,
 				data VARCHAR(20),
-				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito),
+				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_reso)
 			)";
 			echo $query;
@@ -152,8 +152,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella assoc_reso
 			$query = "CREATE TABLE IF NOT EXISTS Assoc_reso(
 				id_assoc_reso INTEGER NOT NULL AUTO_INCREMENT,
-				id_dipendente INTEGER NOT NULL REFERENCES Dipendente(id_dipendente),
-				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso),
+				id_dipendente INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso) ON UPDATE CASCADE ON DELETE  SET NULL,
 				PRIMARY KEY(id_assoc_reso)
 			)";
 			echo $query;
@@ -168,9 +168,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				n_prodotti INTEGER NOT NULL,
 				data VARCHAR(20),
 				stato ENUM('ricevuto', 'in transito', 'in preparazione'),
-				id_gestore INTEGER NOT NULL REFERENCES Dipendente(id_dipendente),
-				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito),
-				id_camionista INTEGER NOT NULL REFERENCES Camionista(id_camionista),
+				id_gestore INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_camionista INTEGER NOT NULL REFERENCES Camionista(id_camionista) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_ordine)
 			)";
 			echo $query;
@@ -183,8 +183,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$query = "CREATE TABLE IF NOT EXISTS Comprendere(
 				id_comprendere INTEGER NOT NULL AUTO_INCREMENT,
 				quantita INTEGER NOT NULL,
-				id_ordine INTEGER NOT NULL REFERENCES Ordine(id_ordine),
-				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
+				id_ordine INTEGER NOT NULL REFERENCES Ordine(id_ordine) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_comprendere)
 			)";
 			echo $query;
@@ -237,8 +237,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$query = "CREATE TABLE IF NOT EXISTS Controllo(
 				id_controllo INTEGER NOT NULL AUTO_INCREMENT,
 				data VARCHAR(20),
-				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
-				id_report INTEGER NOT NULL REFERENCES Report(id_report),
+				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_report INTEGER NOT NULL REFERENCES Report(id_report)ON UPDATE CASCADE ON DELETE SET NULL,
 				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
 				PRIMARY KEY(id_controllo)
 			)";
@@ -255,8 +255,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				esito ENUM('positivo', 'negativo'),
 				descrizione VARCHAR(350),
 				data VARCHAR(20),
-				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
-				id_capo_divisione INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
+				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile)ON UPDATE CASCADE ON DELETE SET NULL,
+				id_capo_divisione INTEGER NOT NULL REFERENCES Responsabile(id_responsabile)ON UPDATE CASCADE ON DELETE SET NULL,
 				PRIMARY KEY(id_report)
 			)";
 			echo $query;
