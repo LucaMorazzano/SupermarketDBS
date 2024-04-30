@@ -47,10 +47,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				residenza VARCHAR(20),
 				tot_vendite INTEGER,
 				tot_incasso REAL,
-				incasso_giornaliero REAL,
-				incasso_settimanale REAL, 
-				id_ispettore INTEGER NOT NULL DEFAULT -1 REFERENCES Responsabile(id_responsabile) ON UPDATE CASCADE ON DELETE SET DEFAULT,
-				id_capo_divisione INTEGER NOT NULL DEFAULT -1 REFERENCES Responsabile(id_responsabile) ON UPDATE CASCADE ON DELETE SET DEFAULT,
+				tot_dipendenti INTEGER,
+				id_ispettore INTEGER NOT NULL ,
+				id_capo_divisione INTEGER NOT NULL,
 				PRIMARY KEY(id_punto_vendita)
 			)";
 			echo $query;
@@ -65,7 +64,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				nome VARCHAR(20),
 				fornitore VARCHAR(20),
 				prezzo REAL,
-				id_reso INTEGER REFERENCES Reso(id_reso) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_reso INTEGER REFERENCES Reso(id_reso),
 				PRIMARY KEY(id_prodotto)
 			)";
 			echo $query;
@@ -77,10 +76,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella vendita
 			$query = "CREATE TABLE IF NOT EXISTS Vendita(
 				id_vendita INTEGER NOT NULL AUTO_INCREMENT,
-				data VARCHAR(20),
+				totale REAL,
 				quantita INTEGER NOT NULL, 
-				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ON UPDATE CASCADE ON DELETE SET NULL,
-				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
+				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
 				PRIMARY KEY(id_vendita)
 			)";
 			echo $query;
@@ -94,7 +93,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_magazzino INTEGER NOT NULL AUTO_INCREMENT,
 				capienza INTEGER NOT NULL,
 				spazio_disponibile INTEGER NOT NULL, 
-				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
 				PRIMARY KEY(id_magazzino)
 			)";
 			echo $query;
@@ -107,8 +106,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$query = "CREATE TABLE IF NOT EXISTS in_magazzino(
 				id_in_magazzino INTEGER NOT NULL AUTO_INCREMENT,
 				quantita INTEGER NOT NULL,
-				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ON UPDATE CASCADE ON DELETE SET NULL,
-				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ,
+				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino) ,
 				PRIMARY KEY(id_in_magazzino)
 			)";
 			echo $query;
@@ -126,7 +125,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				data_assunzione VARCHAR(20),
 				data_scadenza VARCHAR(20),
 				retribuzione REAL,
-				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita) ,
 				PRIMARY KEY(id_dipendente)
 			)";
 			echo $query;
@@ -140,7 +139,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_reso INTEGER NOT NULL AUTO_INCREMENT,
 				n_prodotti INTEGER NOT NULL,
 				data VARCHAR(20),
-				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ,
 				PRIMARY KEY(id_reso)
 			)";
 			echo $query;
@@ -152,8 +151,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella assoc_reso
 			$query = "CREATE TABLE IF NOT EXISTS Assoc_reso(
 				id_assoc_reso INTEGER NOT NULL AUTO_INCREMENT,
-				id_dipendente INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ON UPDATE CASCADE ON DELETE SET NULL,
-				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso) ON UPDATE CASCADE ON DELETE  SET NULL,
+				id_dipendente INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ,
+				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso) ,
 				PRIMARY KEY(id_assoc_reso)
 			)";
 			echo $query;
@@ -168,9 +167,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				n_prodotti INTEGER NOT NULL,
 				data VARCHAR(20),
 				stato ENUM('ricevuto', 'in transito', 'in preparazione'),
-				id_gestore INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ON UPDATE CASCADE ON DELETE SET NULL,
-				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ON UPDATE CASCADE ON DELETE SET NULL,
-				id_camionista INTEGER NOT NULL REFERENCES Camionista(id_camionista) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_gestore INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ,
+				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ,
+				id_camionista INTEGER NOT NULL REFERENCES Camionista(id_camionista) ,
 				PRIMARY KEY(id_ordine)
 			)";
 			echo $query;
@@ -183,8 +182,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$query = "CREATE TABLE IF NOT EXISTS Comprendere(
 				id_comprendere INTEGER NOT NULL AUTO_INCREMENT,
 				quantita INTEGER NOT NULL,
-				id_ordine INTEGER NOT NULL REFERENCES Ordine(id_ordine) ON UPDATE CASCADE ON DELETE SET NULL,
-				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ON UPDATE CASCADE ON DELETE SET NULL,
+				id_ordine INTEGER NOT NULL REFERENCES Ordine(id_ordine) ,
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
 				PRIMARY KEY(id_comprendere)
 			)";
 			echo $query;
@@ -237,8 +236,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$query = "CREATE TABLE IF NOT EXISTS Controllo(
 				id_controllo INTEGER NOT NULL AUTO_INCREMENT,
 				data VARCHAR(20),
-				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile) ON UPDATE CASCADE ON DELETE SET NULL,
-				id_report INTEGER NOT NULL REFERENCES Report(id_report)ON UPDATE CASCADE ON DELETE SET NULL,
+				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile) ,
+				id_report INTEGER NOT NULL REFERENCES Report(id_report)ON UPDATE CASCADE ,
 				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
 				PRIMARY KEY(id_controllo)
 			)";
@@ -255,8 +254,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				esito ENUM('positivo', 'negativo'),
 				descrizione VARCHAR(350),
 				data VARCHAR(20),
-				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile)ON UPDATE CASCADE ON DELETE SET NULL,
-				id_capo_divisione INTEGER NOT NULL REFERENCES Responsabile(id_responsabile)ON UPDATE CASCADE ON DELETE SET NULL,
+				id_ispettore INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
+				id_capo_divisione INTEGER NOT NULL REFERENCES Responsabile(id_responsabile),
 				PRIMARY KEY(id_report)
 			)";
 			echo $query;
@@ -265,6 +264,66 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			} else {
 				echo "<h2 style=\"color:red\">Errore creazione tabella report: " . mysqli_error($connection) . "</h2>";
 			}
+
+//Trigger
+			$trigger=array();
+
+//chiusura punto vendita (effettuata da capo divisione)
+			$trigger[0]="CREATE DEFINER=`root`@`localhost` TRIGGER `chiusura_pv` AFTER DELETE ON `punto_vendita` FOR EACH ROW BEGIN
+			DELETE FROM dipendente WHERE id_punto_vendita=OLD.id_punto_vendita;
+			DELETE FROM magazzino WHERE id_punto_vendita=OLD.id_punto_vendita;
+			DELETE FROM controllo WHERE id_punto_vendita=OLD.id_punto_vendita;
+			END;";
+
+//licenziamento dipendente (chiusra pv | licenziamento da ispettore)
+			$trigger[1]="CREATE DEFINER=`root`@`localhost` TRIGGER `licenziamento_dipendente` AFTER DELETE ON `dipendente` FOR EACH ROW BEGIN
+			DELETE FROM assoc_reso WHERE id_dipendente= OLD.id_dipendente;
+			DELETE FROM ordine WHERE id_gestore = OLD.id_dipendente;
+			END;";
+
+//assunzione dipendente (apertura pv | assunzione da ispettore)
+			$trigger[2]="CREATE DEFINER=`root`@`localhost` TRIGGER `assunzione_dipendente` AFTER INSERT ON `dipendente` FOR EACH ROW BEGIN
+			UPDATE punto_vendita SET tot_dipendenti= tot_dipendenti + 1 WHERE id_punto_vendita = NEW.id_punto_vendita;
+			END;";
+			
+//trasferimento dipendente 
+			$trigger[3]="CREATE DEFINER=`root`@`localhost` TRIGGER `trasferimento_dipendente` AFTER UPDATE ON `dipendente` FOR EACH ROW BEGIN
+			IF OLD.id_punto_vendita != NEW.id_punto_vendita THEN
+				UPDATE punto_vendita SET tot_dipendenti= tot_dipendenti + 1 WHERE id_punto_vendita = NEW.id_punto_vendita;
+				UPDATE punto_vendita SET tot_dipendenti= tot_dipendenti + 1 WHERE id_punto_vendita = OLD.id_punto_vendita;
+			END IF;
+			END;";
+//cancellazione ordine
+			$trigger[4]="CREATE DEFINER=`root`@`localhost` TRIGGER `cancellazione_ordine` AFTER DELETE ON `ordine` FOR EACH ROW BEGIN
+			DELETE FROM comprendere WHERE id_ordine= OLD.id_ordine;
+			UPDATE magazzino SET capienza= capienza + OLD.n_prodotti;
+			END;";
+
+//inserimento ordine
+			$trigger[5]="CREATE DEFINER=`root`@`localhost` TRIGGER `nuovo_ordine` AFTER INSERT ON `ordine` FOR EACH ROW BEGIN
+			UPDATE magazzino SET capienza= capienza - NEW.n_prodotti;
+			END;";
+
+//vendita prodotto
+			$trigger[6]="CREATE DEFINER=`root`@`localhost` TRIGGER `magazzino_remove` AFTER DELETE ON `magazzino` FOR EACH ROW BEGIN
+			DELETE FROM in_magazzino WHERE id_magazzino= OLD.id_magazzino;
+			END;";
+
+			$trigger[7]="CREATE DEFINER=`root`@`localhost` TRIGGER `vendita_prodotto` AFTER INSERT ON `vendita` FOR EACH ROW BEGIN
+			UPDATE punto_vendita SET tot_vendite = tot_vendite + NEW.quantita;
+			UPDATE punto_vendita SET tot_incasso = tot_incasso + NEW.totale;
+			UPDATE magazzino SET capienza= capienza + NEW.quantita;
+			END;";
+
+			for($i=0;$i<sizeof($trigger);$i++){
+				if(!mysqli_query($connection,$trigger[$i])){
+					echo $trigger[$i];
+					echo "<h2 style=\"color:red\">Errore definizione trigger</h2>";
+					break;
+				}
+			}
+			echo "<h2 style=\"color:green\">Trigger definiti correttamente</h2>";
+
 //POPOLAMENTO TABELLE
 			require_once("popola.php");
 			if(popola("prodotti","prodotto",$connection))
@@ -281,6 +340,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				echo "<h2 style=\"color:green\">popolamento responsabile riuscito</h2>";
 			else 
 				echo "<h2 style=\"color:red\">errore popolamento responsabile</h2>";
+
+			if(popola("camionisti","camionista",$connection))
+				echo "<h2 style=\"color:green\">popolamento camionista riuscito</h2>";
+			else 
+				echo "<h2 style=\"color:red\">errore popolamento camionista</h2>";
+
+			if(popola("depositi","deposito",$connection))
+				echo "<h2 style=\"color:green\">popolamento deposito riuscito</h2>";
+			else 
+				echo "<h2 style=\"color:red\">errore popolamento deposito</h2>";
 
 			if(build_pv($connection))
 				echo "<h2 style=\"color:green\">popolamento punti vendita riuscito</h2>";

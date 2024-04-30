@@ -61,7 +61,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 							$data_s=$row[5];
 							$retribuzione=$row[6];
 
-							$query="INSERT INTO $tabella(id_dipendente,ruolo,nome,cognome,data_assunzione,data_scadenza,retribuzione,id_punto_vendita) VALUES ($id, '$ruolo','$nome', '$cognome', '$data_a', '$data_s', $retribuzione, 0)";
+							$query="INSERT INTO $tabella(id_dipendente,ruolo,nome,cognome,data_assunzione,data_scadenza,retribuzione,id_punto_vendita) VALUES ($id, '$ruolo','$nome', '$cognome', '$data_a', '$data_s', $retribuzione, -1)";
 						}
 //tabella responsabile
 						if($tabella=="responsabile"){
@@ -72,8 +72,22 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 							$query="INSERT INTO $tabella(id_responsabile, ruolo, nome, cognome) VALUES ($id, '$ruolo', '$nome', '$cognome' )";
 						}
+//tabella deposito
+						if($tabella=="deposito"){
+							$id=$row[0];
+							$residenza=$row[1];
 
+							$query="INSERT INTO $tabella(id_deposito, residenza) VALUES ($id, '$residenza' )";
+						}
+//tabella camionista
+						if($tabella=="camionista"){
+							$id=$row[0];
+							$nome=$row[1];
+							$cognome=$row[2];
+							$targa_mezzo=$row[3];
 
+							$query="INSERT INTO $tabella(id_camionista, nome, cognome, targa_mezzo) VALUES ($id, '$nome', '$cognome', '$targa_mezzo' )";
+						}
 
 
 //invio query
@@ -102,20 +116,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				$ispettori=getIspettori($connection);
 				$cdiv=getCapiDivisione($connection);
 				$adv= getAddettiVendita($connection);
-				$i=0; $j=0;
-
+				var_dump($ispettori);
 				if($gestori && $ispettori && $cdiv && $adv){
 					$id=100;
 					foreach($gestori as $gestore){
 						$id_gestore=$gestore['id_dipendente'];
-						if($i == mysqli_num_rows($ispettori))
-							$i=0;
-						mysqli_data_seek($ispettori, $i);
-						$id_ispettore=$ispettori['id_responsabile'];
-						$i++;
+						//sistemare ogni pv ha un isp e un cd 
+						$id_ispettore=0;
+						$id_capo_divisione=0;
+						
 						$residenza=getResidenza();
 
-						$query="INSERT INTO punto_vendita(id_punto_vendita, residenza, tot_vendite, tot_incasso, incasso_giornaliero, incasso_settimanale, id_ispettore ) VALUES ($id, '$residenza', 0, 0, 0, 0, $id_ispettore)";
+						$query="INSERT INTO punto_vendita(id_punto_vendita, residenza, tot_vendite, tot_incasso, tot_dipendenti, id_ispettore, id_capo_divisione ) VALUES ($id, '$residenza', 0, 0, 1,  $id_ispettore, $id_capo_divisione)";
 						$id++;
 						if(!mysqli_query($connection,$query)){
 							echo "$query ... $connection->error";

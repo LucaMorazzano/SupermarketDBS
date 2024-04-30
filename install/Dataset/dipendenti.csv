@@ -1,100 +1,100 @@
 id,ruolo,nome,cognome,data_assunzione,data_scadenza_contratto,retribuzione
-1,addetto vendite,Mario,Rossi,10/01/2020,10/01/2023,1500
-2,addetto vendite,Luca,Bianchi,15/05/2019,15/05/2022,1400
+1,addetto vendite,Mario,Rossi,10/01/2020,10/01/2025,1500
+2,addetto vendite,Luca,Bianchi,15/05/2019,15/05/2025,1400
 3,gestore,Anna,Verdi,20/03/2018,IND,2500
-4,addetto vendite,Giovanni,Neri,05/11/2021,05/11/2024,1450
+4,addetto vendite,Giovanni,Neri,05/11/2021,05/11/2025,1450
 5,gestore,Sofia,Gialli,02/04/2017,IND,2600
-6,addetto vendite,Paolo,Rossi,30/09/2019,30/09/2022,1420
+6,addetto vendite,Paolo,Rossi,30/09/2019,30/09/2025,1420
 7,gestore,Chiara,Bruni,18/06/2016,IND,2550
-8,addetto vendite,Alessia,Verdi,12/08/2020,12/08/2023,1380
-9,addetto vendite,Fabio,Bianchi,25/12/2021,25/12/2024,1480
+8,addetto vendite,Alessia,Verdi,12/08/2020,12/08/2025,1380
+9,addetto vendite,Fabio,Bianchi,25/12/2021,25/12/2025,1480
 10,gestore,Elisa,Neri,07/10/2015,IND,2650
-11,addetto vendite,Marco,Rossi,14/07/2020,14/07/2023,1460
+11,addetto vendite,Marco,Rossi,14/07/2020,14/07/2025,1460
 12,gestore,Laura,Verdi,22/09/2017,IND,2570
 13,addetto vendite,Cristian,Bianchi,08/04/2022,08/04/2025,1440
-14,addetto vendite,Silvia,Gialli,16/02/2019,16/02/2022,1370
+14,addetto vendite,Silvia,Gialli,16/02/2019,16/02/2025,1370
 15,gestore,Marta,Neri,03/11/2014,IND,2600
-16,addetto vendite,Federico,Rossi,19/05/2021,19/05/2024,1490
-17,addetto vendite,Giorgia,Verdi,27/08/2018,27/08/2021,1360
+16,addetto vendite,Federico,Rossi,19/05/2021,19/05/2025,1490
+17,addetto vendite,Giorgia,Verdi,27/08/2018,27/08/2025,1360
 18,gestore,Roberto,Bianchi,04/03/2016,IND,2550
-19,addetto vendite,Valentina,Gialli,11/10/2020,11/10/2023,1470
+19,addetto vendite,Valentina,Gialli,11/10/2020,11/10/2025,1470
 20,gestore,Simone,Neri,29/06/2015,IND,2650
-21,addetto vendite,Francesca,Rossi,09/12/2019,09/12/2022,1430
+21,addetto vendite,Francesca,Rossi,09/12/2019,09/12/2025,1430
 22,gestore,Matteo,Verdi,23/04/2018,IND,2580
-23,addetto vendite,Giulia,Bianchi,06/05/2021,06/05/2024,1500
-24,addetto vendite,Davide,Gialli,15/09/2020,15/09/2023,1410
+23,addetto vendite,Giulia,Bianchi,06/05/2021,06/05/2025,1500
+24,addetto vendite,Davide,Gialli,15/09/2020,15/09/2025,1410
 25,gestore,Veronica,Neri,28/07/2016,IND,2620
-26,addetto vendite,Andrea,Rossi,02/11/2019,02/11/2022,1460
+26,addetto vendite,Andrea,Rossi,02/11/2019,02/11/2025,1460
 27,gestore,Elisabetta,Verdi,17/03/2018,IND,2530
-28,addetto vendite,Lorenzo,Bianchi,24/06/2021,24/06/2024,1480
-29,addetto vendite,Claudia,Gialli,04/10/2020,04/10/2023,1390
+28,addetto vendite,Lorenzo,Bianchi,24/06/2021,24/06/2025,1480
+29,addetto vendite,Claudia,Gialli,04/10/2020,04/10/2025,1390
 30,gestore,Stefano,Neri,11/05/2015,IND,2630
-31,addetto vendite,Martina,Rossi,13/12/2019,13/12/2022,1420
+31,addetto vendite,Martina,Rossi,13/12/2019,13/12/2025,1420
 32,gestore,Valeria,Verdi,25/04/2018,IND,2540
-33,addetto vendite,Sara,Bianchi,07/07/2021,07/07/2024,1510
-34,addetto vendite,Enrico,Gialli,16/10/2020,16/10/2023,1400
+33,addetto vendite,Sara,Bianchi,07/07/2021,07/07/2025,1510
+34,addetto vendite,Enrico,Gialli,16/10/2020,16/10/2025,1400
 35,gestore,Daniele,Neri,03/08/2016,IND,2610
-36,addetto vendite,Beatrice,Rossi,12/11/2019,12/11/2022,1430
+36,addetto vendite,Beatrice,Rossi,12/11/2019,12/11/2025,1430
 37,gestore,Roberta,Verdi,26/02/2018,IND,2560
-38,addetto vendite,Luigi,Bianchi,01/06/2021,01/06/2024,1490
-39,addetto vendite,Elena,Gialli,09/09/2020,09/09/2023,1380
+38,addetto vendite,Luigi,Bianchi,01/06/2021,01/06/2025,1490
+39,addetto vendite,Elena,Gialli,09/09/2020,09/09/2025,1380
 40,gestore,Mirko,Neri,15/05/2015,IND,2640
-41,addetto vendite,Carlo,Rossi,17/12/2019,17/12/2022,1440
+41,addetto vendite,Carlo,Rossi,17/12/2019,17/12/2025,1440
 42,gestore,Barbara,Verdi,29/04/2018,IND,2520
-43,addetto vendite,Michele,Bianchi,08/08/2021,08/08/2024,1470
-44,addetto vendite,Isabella,Gialli,15/10/2020,15/10/2023,1390
+43,addetto vendite,Michele,Bianchi,08/08/2021,08/08/2025,1470
+44,addetto vendite,Isabella,Gialli,15/10/2020,15/10/2025,1390
 45,gestore,Federica,Neri,04/08/2016,IND,2600
-46,addetto vendite,Giacomo,Rossi,13/11/2019,13/11/2022,1450
+46,addetto vendite,Giacomo,Rossi,13/11/2019,13/11/2025,1450
 47,gestore,Cinzia,Verdi,27/03/2018,IND,2550
-48,addetto vendite,Anna,Bianchi,02/06/2021,02/06/2024,1500
-49,addetto vendite,Roberto,Gialli,10/09/2020,10/09/2023,1410
+48,addetto vendite,Anna,Bianchi,02/06/2021,02/06/2025,1500
+49,addetto vendite,Roberto,Gialli,10/09/2020,10/09/2025,1410
 50,gestore,Sonia,Neri,16/05/2015,IND,2620
-51,addetto vendite,Paola,Rossi,18/12/2019,18/12/2022,1420
+51,addetto vendite,Paola,Rossi,18/12/2019,18/12/2025,1420
 52,gestore,Claudio,Verdi,30/04/2018,IND,2540
-53,addetto vendite,Valeria,Bianchi,09/08/2021,09/08/2024,1510
-54,addetto vendite,Luca,Gialli,16/10/2020,16/10/2023,1400
+53,addetto vendite,Valeria,Bianchi,09/08/2021,09/08/2025,1510
+54,addetto vendite,Luca,Gialli,16/10/2020,16/10/2025,1400
 55,gestore,Mattia,Neri,05/08/2016,IND,2630
-56,addetto vendite,Linda,Rossi,14/11/2019,14/11/2022,1430
+56,addetto vendite,Linda,Rossi,14/11/2019,14/11/2025,1430
 57,gestore,Silvio,Verdi,28/03/2018,IND,2560
-58,addetto vendite,Elisa,Bianchi,03/06/2021,03/06/2024,1490
-59,addetto vendite,Giorgio,Gialli,11/09/2020,11/09/2023,1380
+58,addetto vendite,Elisa,Bianchi,03/06/2021,03/06/2025,1490
+59,addetto vendite,Giorgio,Gialli,11/09/2020,11/09/2025,1380
 60,gestore,Angela,Neri,17/05/2015,IND,2640
-61,addetto vendite,Claudio,Rossi,19/12/2019,19/12/2022,1440
+61,addetto vendite,Claudio,Rossi,19/12/2019,19/12/2025,1440
 62,gestore,Valentina,Verdi,01/05/2018,IND,2520
-63,addetto vendite,Marco,Bianchi,10/08/2021,10/08/2024,1470
-64,addetto vendite,Sara,Gialli,17/10/2020,17/10/2023,1390
+63,addetto vendite,Marco,Bianchi,10/08/2021,10/08/2025,1470
+64,addetto vendite,Sara,Gialli,17/10/2020,17/10/2025,1390
 65,gestore,Giuseppe,Neri,06/08/2016,IND,2600
-66,addetto vendite,Roberta,Rossi,15/11/2019,15/11/2022,1450
+66,addetto vendite,Roberta,Rossi,15/11/2019,15/11/2025,1450
 67,gestore,Alberto,Verdi,29/03/2018,IND,2550
-68,addetto vendite,Elena,Bianchi,04/06/2021,04/06/2024,1500
-69,addetto vendite,Fabrizio,Gialli,12/09/2020,12/09/2023,1410
+68,addetto vendite,Elena,Bianchi,04/06/2021,04/06/2025,1500
+69,addetto vendite,Fabrizio,Gialli,12/09/2020,12/09/2025,1410
 70,gestore,Lucia,Neri,18/05/2015,IND,2620
-71,addetto vendite,Dario,Rossi,20/12/2019,20/12/2022,1420
+71,addetto vendite,Dario,Rossi,20/12/2019,20/12/2025,1420
 72,gestore,Patrizia,Verdi,02/05/2018,IND,2540
-73,addetto vendite,Simone,Bianchi,11/08/2021,11/08/2024,1510
-74,addetto vendite,Sonia,Gialli,18/10/2020,18/10/2023,1400
+73,addetto vendite,Simone,Bianchi,11/08/2021,11/08/2025,1510
+74,addetto vendite,Sonia,Gialli,18/10/2020,18/10/2025,1400
 75,gestore,Alessandro,Neri,07/08/2016,IND,2630
-76,addetto vendite,Cristina,Rossi,16/11/2019,16/11/2022,1430
+76,addetto vendite,Cristina,Rossi,16/11/2019,16/11/2025,1430
 77,gestore,Luca,Verdi,30/03/2018,IND,2560
-78,addetto vendite,Stefania,Bianchi,05/06/2021,05/06/2024,1490
-79,addetto vendite,Gianluca,Gialli,13/09/2020,13/09/2023,1380
+78,addetto vendite,Stefania,Bianchi,05/06/2021,05/06/2025,1490
+79,addetto vendite,Gianluca,Gialli,13/09/2020,13/09/2025,1380
 80,gestore,Roberto,Neri,19/05/2015,IND,2640
-81,addetto vendite,Annalisa,Rossi,21/12/2019,21/12/2022,1440
+81,addetto vendite,Annalisa,Rossi,21/12/2019,21/12/2025,1440
 82,gestore,Veronica,Verdi,03/05/2018,IND,2520
-83,addetto vendite,Alberto,Bianchi,12/08/2021,12/08/2024,1470
-84,addetto vendite,Martina,Gialli,19/10/2020,19/10/2023,1390
+83,addetto vendite,Alberto,Bianchi,12/08/2021,12/08/2025,1470
+84,addetto vendite,Martina,Gialli,19/10/2020,19/10/2025,1390
 85,gestore,Federico,Neri,08/08/2016,IND,2600
-86,addetto vendite,Valentina,Rossi,17/11/2019,17/11/2022,1450
+86,addetto vendite,Valentina,Rossi,17/11/2019,17/11/2025,1450
 87,gestore,Laura,Verdi,31/03/2018,IND,2550
-88,addetto vendite,Lorenzo,Bianchi,06/06/2021,06/06/2024,1500
-89,addetto vendite,Chiara,Gialli,14/09/2020,14/09/2023,1410
+88,addetto vendite,Lorenzo,Bianchi,06/06/2021,06/06/2025,1500
+89,addetto vendite,Chiara,Gialli,14/09/2020,14/09/2025,1410
 90,gestore,Davide,Neri,20/05/2015,IND,2620
-91,addetto vendite,Roberto,Rossi,22/12/2019,22/12/2022,1420
+91,addetto vendite,Roberto,Rossi,22/12/2019,22/12/2025,1420
 92,gestore,Barbara,Verdi,04/05/2018,IND,2540
-93,addetto vendite,Michele,Bianchi,13/08/2021,13/08/2024,1510
-94,addetto vendite,Isabella,Gialli,20/10/2020,20/10/2023,1400
+93,addetto vendite,Michele,Bianchi,13/08/2021,13/08/2025,1510
+94,addetto vendite,Isabella,Gialli,20/10/2020,20/10/2025,1400
 95,gestore,Angela,Neri,09/08/2016,IND,2630
-96,addetto vendite,Claudio,Rossi,18/11/2019,18/11/2022,1430
+96,addetto vendite,Claudio,Rossi,18/11/2019,18/11/2025,1430
 97,gestore,Valentina,Verdi,01/06/2018,IND,2560
 98,addetto vendite,Marco,Bianchi,14/06/2021,14/06/2024,1480
 99,addetto vendite,Sara,Gialli,15/09/2020,15/09/2023,1390
