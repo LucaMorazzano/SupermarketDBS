@@ -86,7 +86,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 							$cognome=$row[2];
 							$targa_mezzo=$row[3];
 
-							$query="INSERT INTO $tabella(id_camionista, nome, cognome, targa_mezzo) VALUES ($id, '$nome', '$cognome', '$targa_mezzo' )";
+							$query="INSERT INTO $tabella(id_camionista, nome, cognome, targa_mezzo, stato) VALUES ($id, '$nome', '$cognome', '$targa_mezzo', 'disponibile')";
 						}
 
 

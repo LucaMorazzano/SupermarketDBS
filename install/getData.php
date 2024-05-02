@@ -67,6 +67,26 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 					return false;
 				}
 			}
+//login
+			function LoginDipendente($id, $cognome, $connection){
+				$query= "SELECT * FROM dipendente 
+					WHERE id_dipendente LIKE $id AND cognome LIKE '$cognome'";
+				$res= mysqli_query($connection,$query);
+				if($res && mysqli_num_rows($res)>0)
+					return $res;
+				else
+					return false;
+			}
+
+			function LoginResponsabile($id, $cognome, $connection){
+				$query= "SELECT * FROM responsabile
+					WHERE id_responsabile LIKE $id AND cognome LIKE '$cognome'";
+				$res= mysqli_query($connection,$query);
+				if($res && mysqli_num_rows($res)>0)
+					return $res;
+				else
+					return false;
+			}
 //getResidenza
             function getResidenza(){
                 $residenza = array(
@@ -89,6 +109,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 $index=rand(0,sizeof($residenza)-1);
                 return $residenza[$index];
             }
+
 //convert sql to array
 			function sql_to_array($sqlobject){
 				$result=array();

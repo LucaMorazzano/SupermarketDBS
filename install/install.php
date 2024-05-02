@@ -198,6 +198,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				nome VARCHAR(20),
 				cognome VARCHAR(20),
 				targa_mezzo VARCHAR(8),
+				stato ENUM('disponibile', 'occupato' ),
 				PRIMARY KEY(id_camionista)
 			)";
 			echo $query;
@@ -297,19 +298,36 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$trigger[4]="CREATE DEFINER=`root`@`localhost` TRIGGER `cancellazione_ordine` AFTER DELETE ON `ordine` FOR EACH ROW BEGIN
 			DELETE FROM comprendere WHERE id_ordine= OLD.id_ordine;
 			UPDATE magazzino SET capienza= capienza + OLD.n_prodotti;
+			UPDATE camionita SET stato= 'disponibile' WHERE ordine.id_camionista = camionista.id_camionista;
 			END;";
 
-//inserimento ordine
-			$trigger[5]="CREATE DEFINER=`root`@`localhost` TRIGGER `nuovo_ordine` AFTER INSERT ON `ordine` FOR EACH ROW BEGIN
-			UPDATE magazzino SET capienza= capienza - NEW.n_prodotti;
+//nuovo ordine
+			$trigger[5]="CREATE DEFINER=`root`@`localhost` TRIGGER `ordine_transito` AFTER INSERT ON `ordine` FOR EACH ROW BEGIN
+			UPDATE camionista SET stato = 'occupato' WHERE id_camionista = NEW.id_camionista;
+			UPDATE ordine SET stato='in transito' WHERE id_camionista= NEW.id_camionista;
+			END;";
+
+//ordine consegnato
+			$trigger[6]="CREATE DEFINER=`root`@`localhost` TRIGGER `ordine_consegnato` AFTER UPDATE ON `camionista` FOR EACH ROW BEGIN
+			IF NEW.stato ='disponibile' THEN
+				UPDATE ordine SET stato='ricevuto' WHERE id_camionista = NEW.id_camionista;
+			END IF;
+			END;";
+//aggiornamento magazzino
+			$trigger[7]="CREATE DEFINER=`root`@`localhost` TRIGGER `aggiorna_capienza` AFTER UPDATE ON `ordine` FOR EACH ROW BEGIN
+			IF NEW.stato ='ricevuto' THEN
+				UPDATE magazzino INNER JOIN punto_vendita INNER JOIN dipendente
+				 SET capienza= capienza - NEW.n_prodotti WHERE dipendente.id_dipendente = NEW.id_gestore AND dipendente.id_punto_vendita = punto_vendita.id_punto_vendita
+				 AND magazzino.id_punto_vendita = punto_vendita.id_punto_vendita;
+			END IF;
 			END;";
 
 //vendita prodotto
-			$trigger[6]="CREATE DEFINER=`root`@`localhost` TRIGGER `magazzino_remove` AFTER DELETE ON `magazzino` FOR EACH ROW BEGIN
+			$trigger[8]="CREATE DEFINER=`root`@`localhost` TRIGGER `magazzino_remove` AFTER DELETE ON `magazzino` FOR EACH ROW BEGIN
 			DELETE FROM in_magazzino WHERE id_magazzino= OLD.id_magazzino;
 			END;";
 
-			$trigger[7]="CREATE DEFINER=`root`@`localhost` TRIGGER `vendita_prodotto` AFTER INSERT ON `vendita` FOR EACH ROW BEGIN
+			$trigger[9]="CREATE DEFINER=`root`@`localhost` TRIGGER `vendita_prodotto` AFTER INSERT ON `vendita` FOR EACH ROW BEGIN
 			UPDATE punto_vendita SET tot_vendite = tot_vendite + NEW.quantita;
 			UPDATE punto_vendita SET tot_incasso = tot_incasso + NEW.totale;
 			UPDATE magazzino SET capienza= capienza + NEW.quantita;
