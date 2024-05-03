@@ -40,22 +40,40 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <?php
 //LOGIN
             if(isset($_POST['login'])){
-                $username=$_POST['username'];
-                $password=$_POST['password'];
+                $username=$_POST['username']; //cognome
+                $password=$_POST['password']; //id
 
-                if($loginResponsabile= LoginResponsabile($password, $username, $connection))
-                {
-                    $responsabile=sql_to_array($loginResponsabile);
-                    echo "RESPONSABILE";
+//as responsabile              
+                if(isset($_POST['checkbox'])){
+                    if($loginresponsabile= LoginResponsabile($password, $username, $connection))
+                    {
+                        $responsabile=mysqli_fetch_array($loginresponsabile);
+                        $_SESSION['nome']=$responsabile['nome'];
+                        $_SESSION['cognome']=$responsabile['cognome'];
+                        $_SESSION['ruolo']=$responsabile['ruolo'];
+
+                        header('Location: menu.php');
+                    }
+                    else
+                        echo "<script>alert(\"Dati errati\")</script>";
                 }
-                
-                else if($loginDipendente = LoginDipendente($password, $username, $connection)){
-                    $dipendente=sql_to_array($loginDipendente);
-                    $nome=$dipendente['nome'];
-                    echo "DIPENDENTE $nome";
+//as dipendente                    
+                else {
+                    if($logindipendente = LoginDipendente($password, $username, $connection)){
+                        $dipendente=mysqli_fetch_array($logindipendente);
+                        $_SESSION['nome']=$dipendente['nome'];
+                        $_SESSION['cognome']=$dipendente['cognome'];
+                        $_SESSION['ruolo']=$dipendente['ruolo'];
+                        $_SESSION['data_assunzione']=$dipendente['data_assunzione'];
+                        $_SESSION['data_scadenza']=$dipendente['data_scadenza'];
+                        $_SESSION['retribuzione']=$_dipendente['retribuzione'];
+                        $_SESSION['id_punto_vendita']=$dipendente['id_punto_vendita'];
+
+                        header('Location: menu.php');
+                    }
+                    else
+                        echo "<script>alert(\"Dati errati\")</script>";
                 }
-                else if(!$loginResponsabile && !$loginDipendente)
-                    echo "<script>alert(\"Dati errati\")</script>";
             }
 
         ?>
@@ -82,7 +100,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                                     <input type="password" id="typePasswordX" name="password" class="form-control form-control-lg" style="text-align:center"/>
                                     <label class="form-label" for="typePasswordX">Password</label>
                                 </div>
-
+                                <input id="responsabileCheckbox" type="checkbox" name="checkbox" />
+                                <label for="responsabileCheckbox" class= "form-label" >Responsabile </label><br />
                                 <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" name= "login" type="submit">Login</button>
 
                             </div>
