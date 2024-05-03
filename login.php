@@ -50,7 +50,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                         $responsabile=mysqli_fetch_array($loginresponsabile);
                         $_SESSION['nome']=$responsabile['nome'];
                         $_SESSION['cognome']=$responsabile['cognome'];
+                        $_SESSION['id_responsabile']=$dipendente['id_responsabile'];
                         $_SESSION['ruolo']=$responsabile['ruolo'];
+                        $_SESSION['login']=true;
 
                         header('Location: menu.php');
                     }
@@ -63,11 +65,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                         $dipendente=mysqli_fetch_array($logindipendente);
                         $_SESSION['nome']=$dipendente['nome'];
                         $_SESSION['cognome']=$dipendente['cognome'];
+                        $_SESSION['id_dipendente']=$dipendente['id_dipendente'];
                         $_SESSION['ruolo']=$dipendente['ruolo'];
                         $_SESSION['data_assunzione']=$dipendente['data_assunzione'];
                         $_SESSION['data_scadenza']=$dipendente['data_scadenza'];
-                        $_SESSION['retribuzione']=$_dipendente['retribuzione'];
+                        $_SESSION['retribuzione']=$dipendente['retribuzione'];
                         $_SESSION['id_punto_vendita']=$dipendente['id_punto_vendita'];
+                        $_SESSION['login']=true;
 
                         header('Location: menu.php');
                     }

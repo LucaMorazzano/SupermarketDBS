@@ -287,8 +287,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			UPDATE punto_vendita SET tot_dipendenti= tot_dipendenti + 1 WHERE id_punto_vendita = NEW.id_punto_vendita;
 			END;";
 			
-//trasferimento dipendente 
-			$trigger[3]="CREATE DEFINER=`root`@`localhost` TRIGGER `trasferimento_dipendente` AFTER UPDATE ON `dipendente` FOR EACH ROW BEGIN
+//trasferimento dipendente
+			$trigger[3]="CREATE DEFINER=`root`@`localhost` TRIGGER `update_dipendente` AFTER UPDATE ON `dipendente` FOR EACH ROW BEGIN
 			IF OLD.id_punto_vendita != NEW.id_punto_vendita THEN
 				UPDATE punto_vendita SET tot_dipendenti= tot_dipendenti + 1 WHERE id_punto_vendita = NEW.id_punto_vendita;
 				UPDATE punto_vendita SET tot_dipendenti= tot_dipendenti + 1 WHERE id_punto_vendita = OLD.id_punto_vendita;
@@ -332,6 +332,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			UPDATE punto_vendita SET tot_incasso = tot_incasso + NEW.totale;
 			UPDATE magazzino SET capienza= capienza + NEW.quantita;
 			END;";
+			
 
 			for($i=0;$i<sizeof($trigger);$i++){
 				if(!mysqli_query($connection,$trigger[$i])){
