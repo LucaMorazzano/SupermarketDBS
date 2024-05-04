@@ -31,7 +31,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="menu.php">Menu</a></li>
+                    <li class="breadcrumb-item"><a href="homepage.php">Homepage</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Account</li>
                 </ol>
                 </nav>
@@ -45,7 +45,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     <img src="img/avatar.png" alt="avatar"
                     class="rounded-circle img-fluid" style="width: 150px;">
                     <h5 class="my-3"><?php echo $_SESSION['nome']. " " .$_SESSION['cognome'] ?></h5>
-                    <p class="text-muted mb-4"><b>id: <?php echo $_SESSION['id_dipendente'] ?></b></p>
+                    <p class="text-muted mb-4"><b>id: <?php echo $_SESSION['id']?></b></p>
                     <p class="text-muted mb-4">Ruolo: <b><?php echo $_SESSION['ruolo'] ?></b></p>
 
                     <?php

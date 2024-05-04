@@ -139,7 +139,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_reso INTEGER NOT NULL AUTO_INCREMENT,
 				n_prodotti INTEGER NOT NULL,
 				data VARCHAR(20),
+				stato ENUM('aperto', 'chiuso'),
 				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ,
+				id_addetto_vendita INTEGER NOT NULL REFERENCES Dipendente(id_dipendente),
 				PRIMARY KEY(id_reso)
 			)";
 			echo $query;
@@ -147,19 +149,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				echo "<h2 style=\"color:green\">Tabella reso creata</h2>";
 			} else {
 				echo "<h2 style=\"color:red\">Errore creazione tabella reso: " . mysqli_error($connection) . "</h2>";
-			}
-//tabella assoc_reso
-			$query = "CREATE TABLE IF NOT EXISTS Assoc_reso(
-				id_assoc_reso INTEGER NOT NULL AUTO_INCREMENT,
-				id_dipendente INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ,
-				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso) ,
-				PRIMARY KEY(id_assoc_reso)
-			)";
-			echo $query;
-			if (mysqli_query($connection, $query)) {
-				echo "<h2 style=\"color:green\">Tabella assoc_reso creata</h2>";
-			} else {
-				echo "<h2 style=\"color:red\">Errore creazione tabella assoc_reso: " . mysqli_error($connection) . "</h2>";
 			}
 //tabella ordine
 			$query = "CREATE TABLE IF NOT EXISTS Ordine(
@@ -332,7 +321,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			UPDATE punto_vendita SET tot_incasso = tot_incasso + NEW.totale;
 			UPDATE magazzino SET capienza= capienza + NEW.quantita;
 			END;";
-			
 
 			for($i=0;$i<sizeof($trigger);$i++){
 				if(!mysqli_query($connection,$trigger[$i])){

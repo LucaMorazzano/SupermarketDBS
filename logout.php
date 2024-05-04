@@ -14,7 +14,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <?php
             session_start();
             unset($_SESSION);
-            session_destroy($_SESSION);
+            session_destroy();
             header('Location: login.php');
         ?>
     </body>

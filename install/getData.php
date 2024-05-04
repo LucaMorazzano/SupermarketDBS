@@ -57,6 +57,25 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 					return false;
 				}
 			}
+//get punti vendita di responsabile
+			function getPuntiVenditaResp($id, $option, $connection){
+				if(!$id)
+					return false;
+				//da ispettore
+				if($option == 0)
+					$query="SELECT * FROM punto_vendita WHERE id_ispettore LIKE $id";
+				//da capo divisione
+				if($option == 1)
+					$query="SELECT * FROM punto_vendita WHERE id_capo_divisione LIKE $id";
+
+				if($res= mysqli_query($connection,$query))
+					return $res;
+				else{
+					echo" $query...$connection->error<br />";
+					return false;
+				}
+
+			}
 //get adv
 			function getAddettiVendita($connection){
 				$query= "SELECT * FROM dipendente WHERE ruolo LIKE 'addetto vendite'";
@@ -109,6 +128,17 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 $index=rand(0,sizeof($residenza)-1);
                 return $residenza[$index];
             }
+
+//getResi
+			function getResi($id_adv,$connection){
+				$query= "SELECT * FROM reso WHERE id_addetto_vendita LIKE $id_adv";
+				$res=mysqli_query($connection,$query);
+				
+				if(!$res)
+					return false;
+				else
+					return $res;
+			}
 
 //convert sql to array
 			function sql_to_array($sqlobject){

@@ -22,12 +22,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <?php
             if(isset($_SESSION['login'])){
         ?>
-        <nav class="navbar navbar-expand-lg bg-light" style="font-size:30px">
+        <nav class="navbar navbar-expand-lg bg-light" style="font-size:30px;">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" >
                 <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="menu.php">Home</a>
+                <a class="nav-link active" aria-current="page" href="homepage.php">Home</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="account.php">Account</a>
