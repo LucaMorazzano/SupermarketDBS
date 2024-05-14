@@ -62,6 +62,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //menu addetto vendite
             function home_adv($connection){
                 $result=getResi($_SESSION['id'],$connection);
+                echo "<form action\"new_reso.php\" method=\"POST\">";
                 echo "<ul class=\"list-group\" style=\"font-size:20px\">
                 <li class=\"list-group-item\" style=\"font-size:30px; background-color:grey; color:white;\">
                 <b>Gestione resi</b>
@@ -74,18 +75,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     $stato=$reso['stato'];
                     echo "<li class=\"list-group-item\"><p>Reso numero:$idreso in $data a deposito: $deposito </p>
                     <div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\">";
-
-                    if($stato == "aperto"){
-                        echo "<a href=\"adv/reso.php\" class=\"btn btn-secondary\">Modifica reso</a>
-                       <p class=\"btn btn-succsess\">Reso Aperto</p>";
-                    }
-                    else{
-                        echo "<a href=\"adv/reso.php\" class=\"btn btn-primary\">Informazioni reso</a>
-                        <p class=\"btn btn-danger\">Reso chiuso</p>";
-                    }
+                    echo "<a href=\"adv/info_reso.php\" class=\"btn btn-primary\">Informazioni reso</a>";
+                    if($stato="chiuso")
+                        echo "<p class=\"btn btn-danger\">Reso chiuso</p>";
+                    else
+                        echo "<input type=\"submit\" value=\"$idreso\" name=\"chiudi\" class=\"btn btn-danger\">Chiudi reso</p>";
                     echo "</div></li>";
                 }
-                echo "</ul>";
+                echo "</ul></form>";
             }
 //menu ispettore
             function home_ispettore($connection){

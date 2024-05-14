@@ -57,6 +57,64 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 					return false;
 				}
 			}
+//get prodotti
+			function getProdotti($connection){
+				$query="SELECT * FROM prodotto";
+				if($res= mysqli_query($connection,$query))
+					return $res;
+				else{
+					echo" $query...$connection->error<br />";
+					return false;
+				}
+			}
+//get prodotti di pv
+			function getProdotti_PV($connection,$id_pv){
+				$query= "SELECT * FROM magazzino WHERE id_punto_vendita LIKE $id_pv";
+				$magazzini= mysqli_query($connection,$query);
+				$prodotti=array();
+				//sfruttiamo associazione 1:1 
+				$magazzino= mysqli_fetch_array($magazzini);
+				$id_magazzino=$magazzino['id_magazzino'];
+
+				$query="SELECT * FROM in_magazzino WHERE id_magazzino LIKE $id_magazzino";
+				$result=mysqli_query($connection,$query);
+
+				if($result){
+					foreach($result as $res){
+						$id_prodotto= $res['id_prodotto'];
+						$query= "SELECT * FROM prodotto WHERE id_prodotto LIKE $id_prodotto";
+						array_push($prodotti, mysqli_query($connection,$query));
+					}
+					return $prodotti;
+				}
+				else return false;
+			}
+
+//get quantita prodotto in magazzino
+			function getQuantita($id_prodotto, $id_magazzino, $connection){
+				$query="SELECT quantita FROM in_magazzino WHERE id_prodotto = $id_prodotto AND id_magazzino= $id_magazzino";
+				if($res= mysqli_query($connection,$query))
+					return $res;
+				else{
+					echo" $query...$connection->error<br />";
+					return false;
+				}
+			}
+
+//get prodotti in reso 
+			//function 
+
+//get magazzino di un punto vendita
+			function getMagazzino($id_pv,$connection){
+				$query="SELECT * FROM magazzino WHERE id_punto_vendita = $id_pv";
+				if($res= mysqli_query($connection,$query))
+					return $res;
+				else{
+					echo" $query...$connection->error<br />";
+					return false;
+				}
+			}
+
 //get punti vendita di responsabile
 			function getPuntiVenditaResp($id, $option, $connection){
 				if(!$id)

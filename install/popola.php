@@ -9,6 +9,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		<title>
 			Popola tabelle
 		</title>
+
 	</head>
 	<body>
 		
@@ -49,7 +50,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 							$fornitore=$row[2];  
 							$prezzo=$row[3];
 
-							$query="INSERT INTO $tabella(id_prodotto,nome,fornitore,prezzo,id_reso) VALUES ($id, '$nome', '$fornitore', $prezzo, 0)";
+							$query="INSERT INTO $tabella(id_prodotto,nome,fornitore,prezzo) VALUES ($id, '$nome', '$fornitore', $prezzo)";
 						}
 //tabella dipendente
 						if($tabella=="dipendente"){				
@@ -186,10 +187,46 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				foreach($punti_vendita as $pv){
 					$id_pv= $pv['id_punto_vendita'];
 					$capienza=rand(100,800);
+					$id_magazzino=1;
 					$query="INSERT INTO magazzino(capienza, spazio_disponibile, id_punto_vendita) VALUES ($capienza, $capienza, $id_pv)";
+					$id_magazzino++;
 					if(!mysqli_query($connection,$query)){
 						echo "$query ... $connection->error";
 						return false;
+					}
+				}
+				return true;
+			}
+
+//inserimento prodotti in magazzino
+			function insert_prodotti($connection){
+				$prodotti=getProdotti($connection);
+				$pvs= getPuntiVendita("tutti",$connection);
+				//per ogni punto vendita inseriamo n prodotti pari al 50% della capienza del magazzino
+				foreach($pvs as $pv){
+					$id_pv=$pv['id_punto_vendita'];
+					//otteniamo magazzino
+					$result=getMagazzino($id_pv,$connection);
+					$magazzino=mysqli_fetch_array($result);
+					$id_magazzino=$magazzino['id_magazzino'];
+					$capienza= $magazzino['capienza'];
+					$limite= ($capienza *50)/100;
+					$quantita=30;
+					//per ogni prodotto aggiungiamo 10 pezzi fino a raggiungere il limite
+					foreach($prodotti as $prodotto){
+						$id_prodotto=$prodotto['id_prodotto'];
+						if($capienza >= $limite){
+							$query="INSERT INTO in_magazzino(quantita,id_prodotto,id_magazzino) VALUES ($quantita,$id_prodotto,$id_magazzino)";
+							if(!mysqli_query($connection,$query)){
+								echo "$query ... $connection->error";
+								break;
+							}
+							$capienza=$capienza- $quantita;
+							$query="SELECT spazio_disponibile FROM magazzino WHERE id_magazzino = $id_magazzino";
+							$result=mysqli_query($connection,$query);
+						}
+						else
+							break;
 					}
 				}
 				return true;

@@ -64,7 +64,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				nome VARCHAR(20),
 				fornitore VARCHAR(20),
 				prezzo REAL,
-				id_reso INTEGER REFERENCES Reso(id_reso),
 				PRIMARY KEY(id_prodotto)
 			)";
 			echo $query;
@@ -139,7 +138,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_reso INTEGER NOT NULL AUTO_INCREMENT,
 				n_prodotti INTEGER NOT NULL,
 				data VARCHAR(20),
-				stato ENUM('aperto', 'chiuso'),
+				stato ENUM ('aperto' , 'chiuso'),
 				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ,
 				id_addetto_vendita INTEGER NOT NULL REFERENCES Dipendente(id_dipendente),
 				PRIMARY KEY(id_reso)
@@ -150,6 +149,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			} else {
 				echo "<h2 style=\"color:red\">Errore creazione tabella reso: " . mysqli_error($connection) . "</h2>";
 			}
+//tabella in_reso
+			$query="CREATE TABLE IF NOT EXISTS in_reso(
+				id_in_reso INTEGER NOT NULL AUTO_INCREMENT,
+				quantita INTEGER NOT NULL,
+				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso),
+				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
+				PRIMARY KEY (id_in_reso)
+				)";
+			echo $query;
+			if (mysqli_query($connection, $query)) {
+				echo "<h2 style=\"color:green\">Tabella in_reso creata</h2>";
+			} else {
+				echo "<h2 style=\"color:red\">Errore creazione tabella in_reso: " . mysqli_error($connection) . "</h2>";
+			}
+
 //tabella ordine
 			$query = "CREATE TABLE IF NOT EXISTS Ordine(
 				id_ordine INTEGER NOT NULL AUTO_INCREMENT,
@@ -306,7 +320,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$trigger[7]="CREATE DEFINER=`root`@`localhost` TRIGGER `aggiorna_capienza` AFTER UPDATE ON `ordine` FOR EACH ROW BEGIN
 			IF NEW.stato ='ricevuto' THEN
 				UPDATE magazzino INNER JOIN punto_vendita INNER JOIN dipendente
-				 SET capienza= capienza - NEW.n_prodotti WHERE dipendente.id_dipendente = NEW.id_gestore AND dipendente.id_punto_vendita = punto_vendita.id_punto_vendita
+				 SET spazio_disponibile= spazio_disponibile - NEW.n_prodotti WHERE dipendente.id_dipendente = NEW.id_gestore AND dipendente.id_punto_vendita = punto_vendita.id_punto_vendita
 				 AND magazzino.id_punto_vendita = punto_vendita.id_punto_vendita;
 			END IF;
 			END;";
@@ -322,6 +336,23 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			UPDATE magazzino SET capienza= capienza + NEW.quantita;
 			END;";
 
+//aggiorna capienza
+			$trigger[10]= "CREATE DEFINER =`root`@`localhost` TRIGGER `inserimento_magazzino` AFTER INSERT ON `in_magazzino` FOR EACH ROW BEGIN
+			UPDATE magazzino SET spazio_disponibile= spazio_disponibile - NEW.quantita WHERE id_magazzino = NEW.id_magazzino;
+			END;";
+
+//inserimento prodotto in reso
+			$trigger[11]= "CREATE DEFINER =`root`@`localhost` TRIGGER `inserimento_in_reso` AFTER INSERT ON `in_reso` FOR EACH ROW BEGIN
+			UPDATE reso SET n_prodotti= n_prodotti + NEW.quantita WHERE id_reso = NEW.id_reso;
+			UPDATE in_magazzino SET quantita= quantita- NEW.quantita WHERE id_prodotto = NEW.id_prodotto; 
+			END;";
+
+//rimozione prodotto da reso 
+			$trigger[12]= "CREATE DEFINER =`root`@`localhost` TRIGGER `rimozione_in_reso` AFTER DELETE ON `in_reso` FOR EACH ROW BEGIN
+			UPDATE reso SET n_prodotti= n_prodotti - OLD.quantita WHERE id_reso = OLD.id_reso;
+			UPDATE in_magazzino SET quantita= quantita- OLD.quantita WHERE id_prodotto = OLD.id_prodotto; 
+			END;";
+
 			for($i=0;$i<sizeof($trigger);$i++){
 				if(!mysqli_query($connection,$trigger[$i])){
 					echo $trigger[$i];
@@ -330,6 +361,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				}
 			}
 			echo "<h2 style=\"color:green\">Trigger definiti correttamente</h2>";
+
+
 
 //POPOLAMENTO TABELLE
 			require_once("popola.php");
@@ -363,6 +396,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			else 
 				echo "<h2 style=\"color:red\">errore popolamento punti vendita</h2>";
 
+			if(insert_prodotti($connection))
+				echo "<h2 style=\"color:green\">prodotti inseriti nei punti vendita</h2>";
+			else 
+				echo "<h2 style=\"color:red\">errore inserimento prodotti nei punti vendita</h2>";
 			$connection->close();
 			
 		?>

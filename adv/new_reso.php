@@ -17,11 +17,59 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             require_once("../install/connection.php");
             require_once("../install/getData.php");
         ?>
+      <style type="text/css">
+            .list-group-item{
+                display:flex;
+                justify-content:space-between;
+            }
+            .bottone{
+                color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+        </style>
+
+        <script src="../install/funzioniJS.js" > </script>
+
     </head>
 
     <body>
-       <?php
-            require_once("../navbar.php");
-       ?>
+        <?php
+            if(isset($_POST['aggiungi'])){
+                
+            }
+
+        ?>
+            
+        <?php
+        //stampiamo tutti i prodotti di un determinato p.v che possono essere resi
+                require_once("navbar.php");
+                $prodotti=getProdotti_PV($connection, $_SESSION['id_punto_vendita']);
+                echo "<form action=\"new_reso.php\" method=\"POST\" style=\"margin-top: 2%; display:flex; justify-content: space-between\">";
+                echo "<div><ul class=\"list-group\" style=\"font-size:20px\">";
+                foreach ($prodotti as $prodotto){
+                    echo "<li class=\"list-group-item\">";
+                    $prodotto=mysqli_fetch_array($prodotto);
+                    $id_prodotto=$prodotto['id_prodotto'];
+                    $id_magazzino= mysqli_fetch_array(getMagazzino($_SESSION['id_punto_vendita'],$connection))['id_magazzino'];
+                    $nome=$prodotto['nome'];
+                    $result= getQuantita($id_prodotto, $id_magazzino, $connection);
+                    if($result){
+                        $result=mysqli_fetch_array($result);
+                        $quantita=$result['quantita'];
+                        echo "
+                        <p style=\"background-color: yellow\"><b>Nome:</b> $nome <b>Quantità in magazzino:</b> $quantita </p> ";
+                        echo "Inserire quantita: <div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\"><input name=\"quantita\" type=\"number\" min=\"1\" max=\"$quantita\">
+                        <input type=\"submit\" name=\"$id_prodotto\" class=\"bottone\" value=\"Aggiungi al reso\" onclick=\"responsivebutton(this,'aggiungi')\" / >
+                        </div>";
+                    }
+                    echo "</li>";
+                }
+                echo "</ul></div>";
+
+        ?>
+
+
+        </div>
     </body>
 </html>
