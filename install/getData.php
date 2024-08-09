@@ -197,6 +197,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				else
 					return $res;
 			}
+			
 
 //convert sql to array
 			function sql_to_array($sqlobject){

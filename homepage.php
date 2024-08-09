@@ -59,85 +59,27 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 
                 ";
             }
-//menu addetto vendite
-            function home_adv($connection){
-                $result=getResi($_SESSION['id'],$connection);
-                echo "<form action\"new_reso.php\" method=\"POST\">";
-                echo "<ul class=\"list-group\" style=\"font-size:20px\">
-                <li class=\"list-group-item\" style=\"font-size:30px; background-color:grey; color:white;\">
-                <b>Gestione resi</b>
-                </li>";
-                echo "<li class=\"list-group-item\"><a href=\"adv/new_reso.php\" class=\"btn btn-success\">+ Inserisci reso</a></li>";
-                foreach($result as $reso){
-                    $idreso=$reso['id_reso'];
-                    $data=$reso['data'];
-                    $deposito=$reso['id_deposito'];
-                    $stato=$reso['stato'];
-                    echo "<li class=\"list-group-item\"><p>Reso numero:$idreso in $data a deposito: $deposito </p>
-                    <div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\">";
-                    echo "<a href=\"adv/info_reso.php\" class=\"btn btn-primary\">Informazioni reso</a>";
-                    if($stato="chiuso")
-                        echo "<p class=\"btn btn-danger\">Reso chiuso</p>";
-                    else
-                        echo "<input type=\"submit\" value=\"$idreso\" name=\"chiudi\" class=\"btn btn-danger\">Chiudi reso</p>";
-                    echo "</div></li>";
-                }
-                echo "</ul></form>";
+//menu adv
+            //menu gestore
+            function home_adv(){
+                echo "
+                <div class=\"container\" style=\"margin-top:7%;\">
+                <div class=\"row\">
+                        <div class=\"col-sm-6\">
+                            <h3><a class=\"nav-link active\" href=\"adv/new_reso.php\">Nuovo reso</a></h3>
+                        </div>
+                        <div class=\"col-sm-6\">
+                            <h3><a class=\"nav-link active\" href=\"adv/lista_resi.php\">Lista resi effettuati</a></h3>
+                        </div>
+                </div>
+                </div>
+                
+                ";
             }
-//menu ispettore
-            function home_ispettore($connection){
-                $result= getPuntiVenditaResp($_SESSION['id'],0,$connection);
-                echo"
-                <ul class=\"list-group\" style=\"font-size:20px\">
-                <li class=\"list-group-item\" style=\"font-size:30px; background-color:grey; color:white;\">
-                <b>Lista punti vendita</b>
-                </li>";
-                foreach($result as $pv){
-                    $id=$pv['id_punto_vendita'];
-                    $residenza=$pv['residenza'];
-                    echo "<li class=\"list-group-item\"><p>$residenza $id</p>
-                    <div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\">
-                        <a href=\"info_pv.php\" class=\"btn btn-primary\">Informazioni</a>
-                        <a href=\"ispettore/gestisci_dipendenti.php\" class=\"btn btn-success\">Visualizza dipendenti</a>
-                        <a href=\"ispettore/controllo.php\" class=\"btn btn-secondary\">Controllo</a>
-                        <a href=\"ispettore/report.php\" class=\"btn btn-danger\">Report</a>
-                    </div>
 
-                    </li>";
-                }
+    ?>
 
-                
-                echo "<li class=\"list-group-item\" style=\"font-size:30px; background-color:grey; color:grey\">.</li></ul>";
-                ;
-            } 
 
-//menu capo divisione
-            function home_cdiv($connection){
-                $result= getPuntiVenditaResp($_SESSION['id'],1,$connection);
-                echo"
-                <ul class=\"list-group\" style=\"font-size:20px\">
-                <li class=\"list-group-item\" style=\"font-size:30px; background-color:grey; color:white;\">
-                <b>Lista punti vendita</b>
-                </li>";
-                foreach($result as $pv){
-                    $id=$pv['id_punto_vendita'];
-                    $residenza=$pv['residenza'];
-                    echo "<li class=\"list-group-item\"><p>$residenza $id</p>
-                    <div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\">
-                        <a href=\"info_pv.php\" class=\"btn btn-primary\">Informazioni</a>
-                        <a href=\"cdiv/simulazione.php\" class=\"btn btn-success\">Simula vendite</a>
-                        <a href=\"cdiv/reportlist.php\" class=\"btn btn-warning\">Visualizza report</a>
-                        <a href=\"cdiv/chiusura.php\" class=\"btn btn-danger\">Chiudi punto vendita</a>
-                    </div>
-
-                    </li>";
-                }
-
-                
-                echo "<li class=\"list-group-item\" style=\"font-size:30px; background-color:grey; color:grey\">.</li></ul>";
-                ;
-            }  
-        ?>
 
     </head>
 

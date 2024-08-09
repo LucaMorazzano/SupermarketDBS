@@ -346,11 +346,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			UPDATE reso SET n_prodotti= n_prodotti + NEW.quantita WHERE id_reso = NEW.id_reso;
 			UPDATE in_magazzino SET quantita= quantita- NEW.quantita WHERE id_prodotto = NEW.id_prodotto; 
 			END;";
+//inserimento in_reso di prodotto già presente
+			$trigger[12]= "CREATE DEFINER =`root`@`localhost` TRIGGER `update_in_reso` AFTER UPDATE ON `in_reso` FOR EACH ROW BEGIN
+			UPDATE reso SET n_prodotti= n_prodotti + NEW.quantita WHERE id_reso = NEW.id_reso;
+			UPDATE in_magazzino SET quantita= quantita- NEW.quantita WHERE id_prodotto = NEW.id_prodotto; 
+			END;";
 
 //rimozione prodotto da reso 
-			$trigger[12]= "CREATE DEFINER =`root`@`localhost` TRIGGER `rimozione_in_reso` AFTER DELETE ON `in_reso` FOR EACH ROW BEGIN
+			$trigger[13]= "CREATE DEFINER =`root`@`localhost` TRIGGER `rimozione_in_reso` AFTER DELETE ON `in_reso` FOR EACH ROW BEGIN
 			UPDATE reso SET n_prodotti= n_prodotti - OLD.quantita WHERE id_reso = OLD.id_reso;
-			UPDATE in_magazzino SET quantita= quantita- OLD.quantita WHERE id_prodotto = OLD.id_prodotto; 
+			UPDATE in_magazzino SET quantita= quantita + OLD.quantita WHERE id_prodotto = OLD.id_prodotto; 
 			END;";
 
 			for($i=0;$i<sizeof($trigger);$i++){
