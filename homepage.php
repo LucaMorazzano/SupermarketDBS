@@ -35,7 +35,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 justify-content:space-between;
             }
         </style>
-
+    </head>
         <?php
 //menu gestore
             function home_gestore(){
@@ -53,6 +53,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                         </div>
                         <div class=\"col-sm-6\">
                             <h3><a class=\"nav-link active\" href=\"gestore/magazzino.php\">Magazzino</a></h3>
+                        </div>
+                        <div class=\"col-sm-6\">
+                            <h3><a class=\"nav-link active\" href=\"gestore/simulatore.php\">Simulatore vendite</a></h3>
                         </div>
                 </div>
                 </div>

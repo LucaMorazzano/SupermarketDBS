@@ -141,7 +141,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 						
 						$residenza=getResidenza();
 
-						$query="INSERT INTO punto_vendita(id_punto_vendita, residenza, tot_vendite, tot_incasso, tot_dipendenti, id_ispettore, id_capo_divisione ) VALUES ($id, '$residenza', 0, 0, 1,  $id_ispettore, $id_capo_divisione)";
+						$query="INSERT INTO punto_vendita(id_punto_vendita, residenza, tot_vendite, tot_incasso, tot_dipendenti, id_ispettore, id_capo_divisione ) VALUES ($id, '$residenza', 0, 0, 0,  $id_ispettore, $id_capo_divisione)";
 						if(!mysqli_query($connection,$query)){
 							echo "$query ... $connection->error";
 							return false;

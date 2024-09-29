@@ -331,9 +331,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			END;";
 
 			$trigger[9]="CREATE DEFINER=`root`@`localhost` TRIGGER `vendita_prodotto` AFTER INSERT ON `vendita` FOR EACH ROW BEGIN
-			UPDATE punto_vendita SET tot_vendite = tot_vendite + NEW.quantita;
-			UPDATE punto_vendita SET tot_incasso = tot_incasso + NEW.totale;
-			UPDATE magazzino SET capienza= capienza + NEW.quantita;
+			UPDATE punto_vendita SET tot_vendite = tot_vendite + NEW.quantita WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
+			UPDATE punto_vendita SET tot_incasso = tot_incasso + NEW.totale WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
+			UPDATE magazzino SET capienza= capienza + NEW.quantita WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
+			UPDATE in_magazzino SET quantita= quantita - NEW.quantita WHERE id_prodotto LIKE NEW.id_prodotto;
 			END;";
 
 //aggiorna capienza
