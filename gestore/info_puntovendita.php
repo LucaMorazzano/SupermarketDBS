@@ -21,6 +21,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
          <style>
             td{
                 background-color:white;
+                text-align:center;
             }
             th{
                 color:white;
@@ -60,7 +61,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                                 $query="SELECT cognome FROM responsabile WHERE id_responsabile LIKE $id_capo_divisione";
                                 $cdiv=mysqli_fetch_array(mysqli_query($connection, $query))['cognome'];
                                 echo "<tr>
-                                         <td>$id_pv</td> <td>$residenza</td> <td> $totale_vendite</td> <td>$tot_incasso</td><td>$tot_dipendenti</td>
+                                         <td>$id_pv</td> <td>$residenza</td> <td> $totale_vendite</td> <td>$tot_incasso&euro;</td><td>$tot_dipendenti</td>
                                          <td>$ispettore ($id_ispettore)</td> <td>$cdiv ($id_capo_divisione)</td>
                                         </tr>";
                             }

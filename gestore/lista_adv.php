@@ -21,6 +21,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
          <style>
             td{
                 background-color:white;
+                text-align:center;
             }
             th{
                 color:white;

@@ -184,16 +184,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //popola magazzini
 			function insert_magazzino($connection){
 				$punti_vendita=getPuntiVendita("tutti", $connection);
+				$id_magazzino=1;
 				foreach($punti_vendita as $pv){
 					$id_pv= $pv['id_punto_vendita'];
 					$capienza=rand(100,800);
-					$id_magazzino=1;
 					$query="INSERT INTO magazzino(capienza, spazio_disponibile, id_punto_vendita) VALUES ($capienza, $capienza, $id_pv)";
-					$id_magazzino++;
 					if(!mysqli_query($connection,$query)){
 						echo "$query ... $connection->error";
 						return false;
 					}
+					$query= "UPDATE punto_vendita SET id_magazzino = $id_magazzino WHERE id_punto_vendita LIKE $id_pv";
+					if(!mysqli_query($connection,$query)){
+						echo "$query ... $connection->error";
+						return false;
+					}
+					$id_magazzino++;
 				}
 				return true;
 			}

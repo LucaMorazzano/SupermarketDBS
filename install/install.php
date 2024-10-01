@@ -47,9 +47,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				residenza VARCHAR(20),
 				tot_vendite INTEGER,
 				tot_incasso REAL,
-				tot_dipendenti INTEGER,
+				tot_dipendenti INTEGER CHECK (tot_dipendenti >= 0),
 				id_ispettore INTEGER NOT NULL ,
 				id_capo_divisione INTEGER NOT NULL,
+				id_magazzino INTEGER NOT NULL,
 				PRIMARY KEY(id_punto_vendita)
 			)";
 			echo $query;
@@ -76,7 +77,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$query = "CREATE TABLE IF NOT EXISTS Vendita(
 				id_vendita INTEGER NOT NULL AUTO_INCREMENT,
 				totale REAL,
-				quantita INTEGER NOT NULL, 
+				quantita INTEGER NOT NULL CHECK (quantita >= 0), 
 				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
 				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
 				PRIMARY KEY(id_vendita)
@@ -90,8 +91,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella magazzino
 			$query = "CREATE TABLE IF NOT EXISTS Magazzino(
 				id_magazzino INTEGER NOT NULL AUTO_INCREMENT,
-				capienza INTEGER NOT NULL,
-				spazio_disponibile INTEGER NOT NULL, 
+				capienza INTEGER NOT NULL CHECK (capienza >= 0),
+				spazio_disponibile INTEGER NOT NULL CHECK (spazio_disponibile >= 0), 
 				id_punto_vendita INTEGER NOT NULL REFERENCES Punto_vendita(id_punto_vendita),
 				PRIMARY KEY(id_magazzino)
 			)";
@@ -104,7 +105,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella in_magazzino
 			$query = "CREATE TABLE IF NOT EXISTS in_magazzino(
 				id_in_magazzino INTEGER NOT NULL AUTO_INCREMENT,
-				quantita INTEGER NOT NULL,
+				quantita INTEGER NOT NULL CHECK (quantita >= 0),
 				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto) ,
 				id_magazzino INTEGER NOT NULL REFERENCES Magazzino(id_magazzino) ,
 				PRIMARY KEY(id_in_magazzino)
@@ -136,7 +137,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella reso
 			$query = "CREATE TABLE IF NOT EXISTS Reso(
 				id_reso INTEGER NOT NULL AUTO_INCREMENT,
-				n_prodotti INTEGER NOT NULL,
+				n_prodotti INTEGER NOT NULL CHECK (n_prodotti >= 0),
 				data VARCHAR(20),
 				stato ENUM ('aperto' , 'chiuso'),
 				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ,
@@ -152,7 +153,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella in_reso
 			$query="CREATE TABLE IF NOT EXISTS in_reso(
 				id_in_reso INTEGER NOT NULL AUTO_INCREMENT,
-				quantita INTEGER NOT NULL,
+				quantita INTEGER NOT NULL CHECK (quantita >= 0),
 				id_reso INTEGER NOT NULL REFERENCES Reso(id_reso),
 				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
 				PRIMARY KEY (id_in_reso)
@@ -167,7 +168,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella ordine
 			$query = "CREATE TABLE IF NOT EXISTS Ordine(
 				id_ordine INTEGER NOT NULL AUTO_INCREMENT,
-				n_prodotti INTEGER NOT NULL,
+				n_prodotti INTEGER NOT NULL CHECK (n_prodotti >= 0),
 				data VARCHAR(20),
 				stato ENUM('ricevuto', 'in transito', 'in preparazione'),
 				id_gestore INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ,
@@ -184,7 +185,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //tabella comprendere
 			$query = "CREATE TABLE IF NOT EXISTS Comprendere(
 				id_comprendere INTEGER NOT NULL AUTO_INCREMENT,
-				quantita INTEGER NOT NULL,
+				quantita INTEGER NOT NULL CHECK (quantita >= 0),
 				id_ordine INTEGER NOT NULL REFERENCES Ordine(id_ordine) ,
 				id_prodotto INTEGER NOT NULL REFERENCES Prodotto(id_prodotto),
 				PRIMARY KEY(id_comprendere)
@@ -326,17 +327,41 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			END;";
 
 //vendita prodotto
-			$trigger[8]="CREATE DEFINER=`root`@`localhost` TRIGGER `magazzino_remove` AFTER DELETE ON `magazzino` FOR EACH ROW BEGIN
-			DELETE FROM in_magazzino WHERE id_magazzino= OLD.id_magazzino;
+			$trigger[8]="CREATE DEFINER=root@localhost TRIGGER prodotto_terminato AFTER UPDATE ON vendita FOR EACH ROW BEGIN
+			UPDATE punto_vendita SET tot_vendite = tot_vendite + (NEW.quantita-OLD.quantita) WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
+			UPDATE punto_vendita SET tot_incasso = tot_incasso + (NEW.totale-OLD.totale) WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
+			UPDATE magazzino SET spazio_disponibile= spazio_disponibile + (NEW.quantita-OLD.quantita) WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
+			UPDATE in_magazzino SET quantita= quantita - (NEW.quantita-OLD.quantita) WHERE id_prodotto LIKE NEW.id_prodotto
+			AND id_magazzino LIKE (
+					SELECT m.id_magazzino FROM magazzino m
+					JOIN punto_vendita pv ON pv.id_magazzino = m.id_magazzino
+					WHERE pv.id_punto_vendita LIKE NEW.id_punto_vendita
+				);
+			DELETE FROM in_magazzino WHERE quantita=0 AND id_prodotto= NEW.id_prodotto
+			AND id_magazzino LIKE (
+				SELECT m.id_magazzino FROM magazzino m
+				JOIN punto_vendita pv ON pv.id_magazzino = m.id_magazzino
+				WHERE pv.id_punto_vendita LIKE NEW.id_punto_vendita
+				);
 			END;";
 
-			$trigger[9]="CREATE DEFINER=`root`@`localhost` TRIGGER `vendita_prodotto` AFTER INSERT ON `vendita` FOR EACH ROW BEGIN
+			$trigger[9]="CREATE DEFINER=root@localhost TRIGGER vendita_prodotto AFTER INSERT ON vendita FOR EACH ROW BEGIN
 			UPDATE punto_vendita SET tot_vendite = tot_vendite + NEW.quantita WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
 			UPDATE punto_vendita SET tot_incasso = tot_incasso + NEW.totale WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
-			UPDATE magazzino SET capienza= capienza + NEW.quantita WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
-			UPDATE in_magazzino SET quantita= quantita - NEW.quantita WHERE id_prodotto LIKE NEW.id_prodotto;
+			UPDATE magazzino SET spazio_disponibile= spazio_disponibile + NEW.quantita WHERE id_punto_vendita LIKE NEW.id_punto_vendita;
+			UPDATE in_magazzino SET quantita= quantita - NEW.quantita WHERE id_prodotto LIKE NEW.id_prodotto
+			AND id_magazzino LIKE (
+				SELECT m.id_magazzino FROM magazzino m
+				JOIN punto_vendita pv ON pv.id_magazzino = m.id_magazzino
+				WHERE pv.id_punto_vendita LIKE NEW.id_punto_vendita
+				);
+			DELETE FROM in_magazzino WHERE quantita=0 AND id_prodotto= NEW.id_prodotto 
+			AND id_magazzino LIKE (
+				SELECT m.id_magazzino FROM magazzino m
+				JOIN punto_vendita pv ON pv.id_magazzino = m.id_magazzino
+				WHERE pv.id_punto_vendita LIKE NEW.id_punto_vendita
+				);
 			END;";
-
 //aggiorna capienza
 			$trigger[10]= "CREATE DEFINER =`root`@`localhost` TRIGGER `inserimento_magazzino` AFTER INSERT ON `in_magazzino` FOR EACH ROW BEGIN
 			UPDATE magazzino SET spazio_disponibile= spazio_disponibile - NEW.quantita WHERE id_magazzino = NEW.id_magazzino;
