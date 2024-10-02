@@ -79,30 +79,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             }
             
         </style>
-        <script>
-            function waitFiveSeconds() {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve();
-                    }, 5000); // 5000 millisecondi = 5 secondi
-                });
-            }
-            async function example() {
-                console.log("Attendo 5 secondi...");
-                
-                await waitFiveSeconds(); // Aspetta 5 secondi
-                
-                console.log("5 secondi trascorsi!");
-            }
-
-        </script>
         </head>
 
         <body>
             <?php
             echo "<div id=\"header\">";
                 echo "<h3> Finestra vendite</h3>";
-                echo "<h3>Start/Stop</h3>";
+                echo "<h3>Console       </h3>";
                 echo "<h3>Resoconto</h3>";
             echo "</div>";
 
@@ -113,17 +96,34 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 }
                 else{
                     $id_pv=$_SESSION['id_punto_vendita'];
-                    echo "<p>Sessione iniziata...</p>";
+                    echo "<p>Simulazione iniziata...</p>";
                     $magazzino=mysqli_fetch_array(getMagazzino($id_pv,$connection));
                     $sd=$magazzino['spazio_disponibile'];
                     $capienza=$magazzino['capienza'];
-                    while($sd<$capienza && !(isset($_POST['stop']))){
+                    if($sd<$capienza){
                         $prodotti=getProdotti_PV($connection,$id_pv);
                         foreach($prodotti as $prodotto){
                             $prodotto=mysqli_fetch_array($prodotto);
                             $id_prodotto=$prodotto['id_prodotto'];
                             $nome_prodotto=$prodotto['nome'];
                             $price=$prodotto['prezzo'];
+                            $query="SELECT quantita FROM in_magazzino WHERE id_prodotto LIKE $id_prodotto AND 
+                                id_magazzino LIKE(
+                                    SELECT m.id_magazzino FROM magazzino m
+                                    JOIN punto_vendita pv ON pv.id_magazzino = m.id_magazzino
+                                    WHERE pv.id_punto_vendita LIKE $id_pv
+                                )";
+                                $result=mysqli_query($connection,$query);
+                                if(!$result){
+                                    echo" $query...$connection->error<br />";
+                                    break;
+                                }
+                            $quantita=mysqli_fetch_array($result)['quantita']; //quantita in magazzino
+                            //si può cambiare per ora impostiamo a 5 per una simulazione lineare
+                            if($quantita>=5)
+                                $q=5;
+                            else
+                                $q=$quantita;
                             $query="SELECT * FROM vendita WHERE id_prodotto LIKE $id_prodotto AND id_punto_vendita LIKE $id_pv";
                             $result=mysqli_query($connection,$query);
                             if(!$result){
@@ -131,47 +131,40 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                                 break;
                             }
                             else if(mysqli_num_rows($result)>0){ //prodotto gia presente
-                                $totale=$price*5;
-                                $query= "UPDATE vendita SET quantita= quantita + 5, totale= totale+ $totale WHERE id_prodotto LIKE $id_prodotto AND id_punto_vendita LIKE $id_pv";
+                                $totale=$price*$q;
+                                $query= "UPDATE vendita SET quantita= quantita + $q, totale= totale+ $totale WHERE id_prodotto LIKE $id_prodotto AND id_punto_vendita LIKE $id_pv";
                                 $result=mysqli_query($connection,$query);
                                 if(!$result)
                                     echo" $query...$connection->error<br />";
                             }
                             else{ //prodotto non presente
-                                $totale=$price*5;
-                                $query="INSERT INTO vendita (totale, quantita, id_prodotto, id_punto_vendita) VALUES ($totale, 5, $id_prodotto, $id_pv)";
+                                $totale=$price*$q;
+                                $query="INSERT INTO vendita (totale, quantita, id_prodotto, id_punto_vendita) VALUES ($totale, $q, $id_prodotto, $id_pv)";
                                 $result=mysqli_query($connection,$query);
                                 if(!$result)
                                     echo" $query...$connection->error<br />";
                             }
-                            $totale=$price*5;
+                            $totale=$price*$q;
                             echo "<p>Prodotto: $nome_prodotto ($id_prodotto); Quantit&agrave;: 5; Totale: $totale&euro;  ";
-                            $sd=$sd+5; //vendiamo 5 prodotti per volta (il trigger aggiornerà il tutto)
+                            $sd=$sd+$q;
                             if ($sd >= $capienza) {
-                                echo "<p>Sessione terminata...</p>";
-                                break;
-                            }
-                            if (isset($_POST['stop'])) {
-                                echo "<p>Sessione terminata...</p>";
+                                echo "<p>Simulazione terminata...</p>";
                                 break;
                             }
                         }
                         
-                        echo "<p>Loading...</p>";
-                        echo "<script>example();</script>";
                     }
-                        
+                    else{ //sd==capienza
+                        echo "<p>Magazzino vuoto...</p>";
                     }
-                if(isset($_POST['stop'])){
-                    echo "<p>Sessione terminata...</p>";
-                }
+                    echo "<p>Simulazione terminata...</p>";  
+                    }
 
                echo " </div>";
 
             echo "<div id=\"center\">
                 <form method=\"POST\" action=\"simulatore.php\" name=\"simulazione\">
                     <input class=\"start-btn\" type=\"submit\" name=\"start\" value=\"Avvia simulazione\"> <br />
-                    <input  class=\"stop-btn\" type=\"submit\" name=\"stop\" value=\"Interrompi simulazione\">
                 </form>
 
                 </div>";

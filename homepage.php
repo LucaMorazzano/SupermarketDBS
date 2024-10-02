@@ -46,16 +46,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                             <h3><a class=\"nav-link active\" href=\"gestore/ordini.php\">Ordini</a></h3>
                         </div>
                         <div class=\"col-sm-6\">
+                            <h3><a class=\"nav-link active\" href=\"gestore/magazzino.php\">Magazzino</a></h3>
+                        </div>
+                        <div class=\"col-sm-6\">
                             <h3><a class=\"nav-link active\" href=\"gestore/info_puntovendita.php\">Informazioni punto vendita</a></h3>
                         </div>
                         <div class=\"col-sm-6\">
                             <h3><a class=\"nav-link active\" href=\"gestore/lista_adv.php\">Lista addetti vendita</a></h3>
                         </div>
                         <div class=\"col-sm-6\">
-                            <h3><a class=\"nav-link active\" href=\"gestore/magazzino.php\">Magazzino</a></h3>
+                            <h3><a class=\"nav-link active\" href=\"gestore/simulatore.php\">Simulatore vendite</a></h3>
                         </div>
                         <div class=\"col-sm-6\">
-                            <h3><a class=\"nav-link active\" href=\"gestore/simulatore.php\">Simulatore vendite</a></h3>
+                            <h3><a class=\"nav-link active\" href=\"gestore/vendite.php\">Visualizza vendite</a></h3>
                         </div>
                 </div>
                 </div>
