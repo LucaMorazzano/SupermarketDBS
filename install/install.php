@@ -170,7 +170,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				id_ordine INTEGER NOT NULL AUTO_INCREMENT,
 				n_prodotti INTEGER NOT NULL CHECK (n_prodotti >= 0),
 				data VARCHAR(20),
-				stato ENUM('ricevuto', 'in transito', 'in preparazione'),
+				stato ENUM('aperto', 'chiuso'),
 				id_gestore INTEGER NOT NULL REFERENCES Dipendente(id_dipendente) ,
 				id_deposito INTEGER NOT NULL REFERENCES Deposito(id_deposito) ,
 				id_camionista INTEGER NOT NULL REFERENCES Camionista(id_camionista) ,
@@ -302,28 +302,46 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$trigger[4]="CREATE DEFINER=`root`@`localhost` TRIGGER `cancellazione_ordine` AFTER DELETE ON `ordine` FOR EACH ROW BEGIN
 			DELETE FROM comprendere WHERE id_ordine= OLD.id_ordine;
 			UPDATE magazzino SET capienza= capienza + OLD.n_prodotti;
-			UPDATE camionita SET stato= 'disponibile' WHERE ordine.id_camionista = camionista.id_camionista;
+			UPDATE camionista SET stato= 'disponibile' WHERE ordine.id_camionista = camionista.id_camionista;
 			END;";
 
 //nuovo ordine
-			$trigger[5]="CREATE DEFINER=`root`@`localhost` TRIGGER `ordine_transito` AFTER INSERT ON `ordine` FOR EACH ROW BEGIN
-			UPDATE camionista SET stato = 'occupato' WHERE id_camionista = NEW.id_camionista;
-			UPDATE ordine SET stato='in transito' WHERE id_camionista= NEW.id_camionista;
+			$trigger[5]="CREATE DEFINER=`root`@`localhost` TRIGGER `nuovo_ordine` AFTER UPDATE ON `ordine` FOR EACH ROW BEGIN
+				IF NEW.stato LIKE 'chiuso' THEN
+					UPDATE magazzino SET spazio_disponibile = spazio_disponibile - (NEW.n_prodotti - OLD.n_prodotti)
+					WHERE id_magazzino LIKE(
+						SELECT o.id_ordine FROM ordine o
+						JOIN dipendente g ON g.id_dipendente = o.id_gestore
+						JOIN punto_vendita pv ON pv.id_punto_vendita = g.id_punto_vendita
+						JOIN magazzino m ON m.id_punto_vendita = pv.id_punto_vendita
+						WHERE o.id_ordine LIKE NEW.id_ordine
+					);
+				END IF;
 			END;";
 
-//ordine consegnato
-			$trigger[6]="CREATE DEFINER=`root`@`localhost` TRIGGER `ordine_consegnato` AFTER UPDATE ON `camionista` FOR EACH ROW BEGIN
-			IF NEW.stato ='disponibile' THEN
-				UPDATE ordine SET stato='ricevuto' WHERE id_camionista = NEW.id_camionista;
-			END IF;
+//aggiunta ordine
+			$trigger[6]="CREATE DEFINER=`root`@`localhost` TRIGGER `nuovo_comprendere` AFTER INSERT ON `comprendere` FOR EACH ROW BEGIN
+			UPDATE ordine SET n_prodotti = n_prodotti + NEW.quantita WHERE id_ordine LIKE NEW.id_ordine;
+			/*UPDATE in_magazzino SET quantita= quantita -NEW.quantita WHERE id_prodotto LIKE NEW.id_prodotto
+			AND id_magazzino LIKE(
+				SELECT g.id_dipendente FROM dipendente g
+				JOIN ordine o ON o.id_gestore = g.id_dipendente
+				JOIN punto_vendita pv ON pv.id_punto_vendita = g.id_punto_vendita
+				JOIN magazzino m ON m.id_punto_vendita = pv.id_punto_vendita
+				WHERE o.id_ordine LIKE NEW.id_ordine
+				);*/
 			END;";
-//aggiornamento magazzino
-			$trigger[7]="CREATE DEFINER=`root`@`localhost` TRIGGER `aggiorna_capienza` AFTER UPDATE ON `ordine` FOR EACH ROW BEGIN
-			IF NEW.stato ='ricevuto' THEN
-				UPDATE magazzino INNER JOIN punto_vendita INNER JOIN dipendente
-				 SET spazio_disponibile= spazio_disponibile - NEW.n_prodotti WHERE dipendente.id_dipendente = NEW.id_gestore AND dipendente.id_punto_vendita = punto_vendita.id_punto_vendita
-				 AND magazzino.id_punto_vendita = punto_vendita.id_punto_vendita;
-			END IF;
+
+			$trigger[7]="CREATE DEFINER=`root`@`localhost` TRIGGER `update_comprendere` AFTER UPDATE ON `comprendere` FOR EACH ROW BEGIN
+			UPDATE ordine SET n_prodotti = n_prodotti + ( NEW.quantita - OLD.quantita) WHERE id_ordine LIKE NEW.id_ordine;
+			/*UPDATE in_magazzino SET quantita= quantita - (NEW.quantita-OLD.quantita) WHERE id_prodotto LIKE NEW.id_prodotto
+			AND id_magazzino LIKE(
+				SELECT g.id_dipendente FROM dipendente g
+				JOIN ordine o ON o.id_gestore = g.id_dipendente
+				JOIN punto_vendita pv ON pv.id_punto_vendita = g.id_punto_vendita
+				JOIN magazzino m ON m.id_punto_vendita = pv.id_punto_vendita
+				WHERE o.id_ordine LIKE NEW.id_ordine
+			);*/
 			END;";
 
 //vendita prodotto
@@ -362,7 +380,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				WHERE pv.id_punto_vendita LIKE NEW.id_punto_vendita
 				);
 			END;";
-//aggiorna capienza
+//aggiorna sd INSERT
 			$trigger[10]= "CREATE DEFINER =`root`@`localhost` TRIGGER `inserimento_magazzino` AFTER INSERT ON `in_magazzino` FOR EACH ROW BEGIN
 			UPDATE magazzino SET spazio_disponibile= spazio_disponibile - NEW.quantita WHERE id_magazzino = NEW.id_magazzino;
 			END;";
@@ -382,6 +400,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			$trigger[13]= "CREATE DEFINER =`root`@`localhost` TRIGGER `rimozione_in_reso` AFTER DELETE ON `in_reso` FOR EACH ROW BEGIN
 			UPDATE reso SET n_prodotti= n_prodotti - OLD.quantita WHERE id_reso = OLD.id_reso;
 			UPDATE in_magazzino SET quantita= quantita + OLD.quantita WHERE id_prodotto = OLD.id_prodotto; 
+			END;";
+
+//aggiorna sd UPDATE
+			$trigger[14]= "CREATE DEFINER =`root`@`localhost` TRIGGER `sd_magazzino` AFTER UPDATE ON `in_magazzino` FOR EACH ROW BEGIN
+			UPDATE magazzino SET spazio_disponibile= spazio_disponibile - (NEW.quantita - OLD.quantita) WHERE id_magazzino = NEW.id_magazzino;
 			END;";
 
 			for($i=0;$i<sizeof($trigger);$i++){
