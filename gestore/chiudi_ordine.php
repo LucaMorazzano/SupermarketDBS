@@ -58,7 +58,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     foreach($result as $comp){
                         $id_prodotto=$comp['id_prodotto'];
                         $quantita=$comp['quantita'];
-                        $query="SELECT id_prodotto FROM in_magazzino WHERE id_magazzino LIKE $id_magazzino";
+                        $query="SELECT id_prodotto FROM in_magazzino WHERE id_magazzino LIKE $id_magazzino AND id_prodotto LIKE $id_prodotto";
                         $result=mysqli_query($connection,$query);
                         if(!$result)
                             echo" $query...$connection->error<br />";
@@ -85,6 +85,22 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 unset($_SESSION['ordine']);
                 unset($_SESSION['sd']);
                 header('Location: lista_ordini.php');
+            }
+
+            if(isset($_POST['elimina'])){
+                $id_ordine=$_POST['id_ordine'];
+                $query="DELETE FROM ordine WHERE id_ordine = $id_ordine";
+                $result=mysqli_query($connection,$query);
+                    if(!$result)
+                        echo" $query...$connection->error<br />";
+                unset($_SESSION['ordine']);
+                unset($_SESSION['sd']);
+                header('Location: lista_ordini.php');
+            }
+
+            if(isset($_POST['modifica'])){
+                $_SESSION['ordine']=$_POST['id_ordine'];
+                header('Location: nuovo_ordine.php');
             }
         ?>
     </body>

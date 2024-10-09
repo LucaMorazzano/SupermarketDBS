@@ -27,6 +27,27 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     color:white;
                 }
         </style>
+
+        <script>
+            function formvalidator(){
+                var radio = document.getElementsByName('id_ordine');
+                var ischecked= false;
+                for (var i = 0; i < radio.length; i++) {
+                if (radio[i].checked) {
+                    ischecked = true;
+                    break;
+                    }
+                }
+
+                if (!ischecked) {
+                    alert("Per favore, seleziona almeno un'opzione.");
+                    return false; 
+                }
+                
+                return true; 
+            }   
+
+        </script>
     </head>
     <body>
 
@@ -56,7 +77,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                      if(!$result)
                             echo" $query...$connection->error<br />";
                     if(mysqli_num_rows($result)>0){
-                    echo "<form action=\"nuovo_ordine.php\" method=\"POST\">";
+                    echo "<form action=\"chiudi_ordine.php\" method=\"POST\" onsubmit=\"return formvalidator()\">";
                     foreach($result as $ordine){
                         $id_ordine=$ordine['id_ordine'];
                         $n_prodotti=$ordine['n_prodotti'];
@@ -89,14 +110,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     }
                      echo "</tbody>
                      <tfoot >
-                    <tr><td colspan=\"3\"><input type=\"submit\" name=\"modifica\" value=\"Modifica\" style=\"background-color:azure; border-radius:20px;\"></form></td>
-                    <form action=\"lista_ordini.php\" method=\"POST\">
+                    <tr><td colspan=\"3\"><input type=\"submit\" name=\"modifica\" value=\"Modifica\" style=\"background-color:azure; border-radius:20px;\"></td>
                     <td></td>
                     <td colspan=\"3\"><input type=\"submit\" name=\"elimina\" value=\"Elimina\" style=\"background-color:red; color:white; border-radius:20px;\"></td></tr>
                     </tfoot></form>";
                 }
                 
                 echo "</table>";
+                
+                if(isset($_SESSION['error']))
+                    unset($_SESSION['error']);
+                ?>
+
+            </body>
+            </html> 
 
 
     ?>

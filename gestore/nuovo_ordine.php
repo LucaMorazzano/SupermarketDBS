@@ -73,20 +73,31 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
          }
         </style>
 
+        <script>
+            function formvalidator(){
+                var radio = document.getElementsByName('prodotti[]');
+                var ischecked= false;
+                for (var i = 0; i < radio.length; i++) {
+                if (radio[i].checked) {
+                    ischecked = true;
+                    break;
+                    }
+                }
+
+                if (!ischecked) {
+                    alert("Per favore, seleziona almeno un'opzione.");
+                    return false; 
+                }
+                
+                return true; 
+            }   
+
+        </script>
+
     </head>
 
     <body>
 
-        <?php
-         //se proveniamo da form modifica ordine
-                    /* se l'ordine non viene chiuso l'id nella session resta lo stesso
-                    fino alla chiusura anche se l'utente cambia pagina e torna in nuovo ordine sarà riproposto
-                    l'ordine in sospeso, a meno che l'utente non effettui il logout, in tale caso
-                    l'ordine rimarrà aperto e selezionabile per modifiche dalla form modifica, mentre se si proviene da form modifica
-                    allora verrà cambiato l'id con quello dell'ordine da modificare*/
-            if(isset($_POST['modifica']))
-                $_SESSION['ordine']=$_POST['id_ordine'];
-        ?>
 
         <?php
 
@@ -94,18 +105,25 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
                 if(!isset($_SESSION['ordine'])){ //nuovo ordine
                     $id_gestore=$_SESSION['id'];
+                    //settiamo l'id ordine nella session
+                    $query="SELECT * FROM ordine ORDER BY id_ordine DESC";
+                    $result=mysqli_query($connection,$query);
+                    if(!$result)
+                        echo" $query...$connection->error<br />";
+                    if(mysqli_num_rows($result)>0){
+                        $top= mysqli_fetch_array($result)['id_ordine'];
+                        $_SESSION['ordine']= $top+1;
+                    }
+                    else
+                        $_SESSION['ordine']=1;
+
+                    $id_ordine=$_SESSION['ordine'];
                     $data = date('Y-m-d');
-                    $query="INSERT INTO ordine (data, stato, id_gestore, id_deposito, id_camionista) VALUES (\"$data\",\"aperto\",$id_gestore,-1,-1)";
+                    $query="INSERT INTO ordine (id_ordine, data, stato, id_gestore, id_deposito, id_camionista) VALUES ($id_ordine, \"$data\",\"aperto\",$id_gestore,-1,-1)";
                     $result=mysqli_query($connection,$query);
                     if(!$result)
                         echo" $query...$connection->error<br />";
 
-                    //settiamo l'id ordine nella session
-                    $query="SELECT * FROM ordine";
-                    $result=mysqli_query($connection,$query);
-                    if(!$result)
-                        echo" $query...$connection->error<br />";
-                    $_SESSION['ordine']= mysqli_num_rows($result);
                 }
 
                 $id_ordine=$_SESSION['ordine'];
@@ -191,7 +209,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     echo" $query...$connection->error<br />";
             }
                 
-            echo "<form action=\"nuovo_ordine.php\" method=\"POST\">";
+            echo "<form action=\"nuovo_ordine.php\" method=\"POST\" onsubmit=\"return formvalidator()\">";
             foreach ($prodotti as $p){
                 $id_p=$p['id_prodotto'];
                 $nome=$p['nome'];

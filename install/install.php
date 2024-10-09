@@ -301,8 +301,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //cancellazione ordine
 			$trigger[4]="CREATE DEFINER=`root`@`localhost` TRIGGER `cancellazione_ordine` AFTER DELETE ON `ordine` FOR EACH ROW BEGIN
 			DELETE FROM comprendere WHERE id_ordine= OLD.id_ordine;
-			UPDATE magazzino SET capienza= capienza + OLD.n_prodotti;
-			UPDATE camionista SET stato= 'disponibile' WHERE ordine.id_camionista = camionista.id_camionista;
 			END;";
 
 //nuovo ordine
@@ -385,26 +383,45 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			UPDATE magazzino SET spazio_disponibile= spazio_disponibile - NEW.quantita WHERE id_magazzino = NEW.id_magazzino;
 			END;";
 
+			$trigger[11]= "CREATE DEFINER =`root`@`localhost` TRIGGER `up_in_magazzino` AFTER UPDATE ON `in_magazzino` FOR EACH ROW BEGIN
+			IF OLD.quantita < NEW.quantita THEN
+				UPDATE magazzino SET spazio_disponibile= spazio_disponibile - (NEW.quantita - OLD.quantita) WHERE id_magazzino = NEW.id_magazzino;
+			END IF;
+			END;";
+
 //inserimento prodotto in reso
-			$trigger[11]= "CREATE DEFINER =`root`@`localhost` TRIGGER `inserimento_in_reso` AFTER INSERT ON `in_reso` FOR EACH ROW BEGIN
+			$trigger[12]= "CREATE DEFINER =`root`@`localhost` TRIGGER `inserimento_in_reso` AFTER INSERT ON `in_reso` FOR EACH ROW BEGIN
 			UPDATE reso SET n_prodotti= n_prodotti + NEW.quantita WHERE id_reso = NEW.id_reso;
 			UPDATE in_magazzino SET quantita= quantita- NEW.quantita WHERE id_prodotto = NEW.id_prodotto; 
 			END;";
 //inserimento in_reso di prodotto già presente
-			$trigger[12]= "CREATE DEFINER =`root`@`localhost` TRIGGER `update_in_reso` AFTER UPDATE ON `in_reso` FOR EACH ROW BEGIN
+			$trigger[13]= "CREATE DEFINER =`root`@`localhost` TRIGGER `update_in_reso` AFTER UPDATE ON `in_reso` FOR EACH ROW BEGIN
 			UPDATE reso SET n_prodotti= n_prodotti + NEW.quantita WHERE id_reso = NEW.id_reso;
 			UPDATE in_magazzino SET quantita= quantita- NEW.quantita WHERE id_prodotto = NEW.id_prodotto; 
 			END;";
 
 //rimozione prodotto da reso 
-			$trigger[13]= "CREATE DEFINER =`root`@`localhost` TRIGGER `rimozione_in_reso` AFTER DELETE ON `in_reso` FOR EACH ROW BEGIN
+			$trigger[14]= "CREATE DEFINER =`root`@`localhost` TRIGGER `rimozione_in_reso` AFTER DELETE ON `in_reso` FOR EACH ROW BEGIN
 			UPDATE reso SET n_prodotti= n_prodotti - OLD.quantita WHERE id_reso = OLD.id_reso;
 			UPDATE in_magazzino SET quantita= quantita + OLD.quantita WHERE id_prodotto = OLD.id_prodotto; 
 			END;";
 
 //aggiorna sd UPDATE
-			$trigger[14]= "CREATE DEFINER =`root`@`localhost` TRIGGER `sd_magazzino` AFTER UPDATE ON `in_magazzino` FOR EACH ROW BEGIN
-			UPDATE magazzino SET spazio_disponibile= spazio_disponibile - (NEW.quantita - OLD.quantita) WHERE id_magazzino = NEW.id_magazzino;
+			$trigger[15]= "CREATE DEFINER =`root`@`localhost` TRIGGER `sd_magazzino` AFTER UPDATE ON `ordine` FOR EACH ROW BEGIN
+			    IF NEW.stato LIKE 'chiuso' THEN
+					UPDATE camionista SET stato = CASE 
+               			WHEN id_camionista = NEW.id_camionista THEN 'occupato' 
+               			ELSE 'disponibile' 
+            		END;
+					/*UPDATE magazzino SET spazio_disponibile= spazio_disponibile - NEW.n_prodotti
+					WHERE id_magazzino = (
+						SELECT m.id_magazzino 
+						FROM dipendente g
+						JOIN punto_vendita pv ON pv.id_punto_vendita = g.id_punto_vendita
+						JOIN magazzino m ON m.id_punto_vendita = pv.id_punto_vendita
+						WHERE g.id_dipendente = NEW.id_gestore
+					);*/
+				END IF;
 			END;";
 
 			for($i=0;$i<sizeof($trigger);$i++){
