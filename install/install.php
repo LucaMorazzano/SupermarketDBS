@@ -320,26 +320,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 //aggiunta ordine
 			$trigger[6]="CREATE DEFINER=`root`@`localhost` TRIGGER `nuovo_comprendere` AFTER INSERT ON `comprendere` FOR EACH ROW BEGIN
 			UPDATE ordine SET n_prodotti = n_prodotti + NEW.quantita WHERE id_ordine LIKE NEW.id_ordine;
-			/*UPDATE in_magazzino SET quantita= quantita -NEW.quantita WHERE id_prodotto LIKE NEW.id_prodotto
-			AND id_magazzino LIKE(
-				SELECT g.id_dipendente FROM dipendente g
-				JOIN ordine o ON o.id_gestore = g.id_dipendente
-				JOIN punto_vendita pv ON pv.id_punto_vendita = g.id_punto_vendita
-				JOIN magazzino m ON m.id_punto_vendita = pv.id_punto_vendita
-				WHERE o.id_ordine LIKE NEW.id_ordine
-				);*/
 			END;";
 
 			$trigger[7]="CREATE DEFINER=`root`@`localhost` TRIGGER `update_comprendere` AFTER UPDATE ON `comprendere` FOR EACH ROW BEGIN
 			UPDATE ordine SET n_prodotti = n_prodotti + ( NEW.quantita - OLD.quantita) WHERE id_ordine LIKE NEW.id_ordine;
-			/*UPDATE in_magazzino SET quantita= quantita - (NEW.quantita-OLD.quantita) WHERE id_prodotto LIKE NEW.id_prodotto
-			AND id_magazzino LIKE(
-				SELECT g.id_dipendente FROM dipendente g
-				JOIN ordine o ON o.id_gestore = g.id_dipendente
-				JOIN punto_vendita pv ON pv.id_punto_vendita = g.id_punto_vendita
-				JOIN magazzino m ON m.id_punto_vendita = pv.id_punto_vendita
-				WHERE o.id_ordine LIKE NEW.id_ordine
-			);*/
 			END;";
 
 //vendita prodotto
@@ -413,16 +397,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                			WHEN id_camionista = NEW.id_camionista THEN 'occupato' 
                			ELSE 'disponibile' 
             		END;
-					/*UPDATE magazzino SET spazio_disponibile= spazio_disponibile - NEW.n_prodotti
-					WHERE id_magazzino = (
-						SELECT m.id_magazzino 
-						FROM dipendente g
-						JOIN punto_vendita pv ON pv.id_punto_vendita = g.id_punto_vendita
-						JOIN magazzino m ON m.id_punto_vendita = pv.id_punto_vendita
-						WHERE g.id_dipendente = NEW.id_gestore
-					);*/
 				END IF;
 			END;";
+//rimozione da ordine
+			$trigger[15]= "CREATE DEFINER =`root`@`localhost` TRIGGER `rimozione_da_ordine` AFTER DELETE ON `comprendere` FOR EACH ROW BEGIN
+			UPDATE ordine SET n_prodotti= n_prodotti - OLD.quantita WHERE id_ordine = OLD.id_ordine AND id_prodotto LIKE OLD.id_prodotto;
+			END;";
+
 
 			for($i=0;$i<sizeof($trigger);$i++){
 				if(!mysqli_query($connection,$trigger[$i])){

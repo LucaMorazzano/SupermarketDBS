@@ -111,7 +111,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                      echo "</tbody>
                      <tfoot >
                     <tr><td colspan=\"3\"><input type=\"submit\" name=\"modifica\" value=\"Modifica\" style=\"background-color:azure; border-radius:20px;\"></td>
-                    <td></td>
+                    <td> <a href=\"nuovo_ordine.php\" style=\"text-decoration:none;\">Nuovo ordine</a></td>
                     <td colspan=\"3\"><input type=\"submit\" name=\"elimina\" value=\"Elimina\" style=\"background-color:red; color:white; border-radius:20px;\"></td></tr>
                     </tfoot></form>";
                 }

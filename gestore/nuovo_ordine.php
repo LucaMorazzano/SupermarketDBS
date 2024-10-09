@@ -131,7 +131,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 $post=$_POST['prodotti'];
                 $n_prodotti=0;
                 $magazzino= mysqli_fetch_array(getMagazzino($id_pv,$connection));
-                $_SESSION['sd']=$magazzino['spazio_disponibile'];
+                $sd=$magazzino['spazio_disponibile'];
 
                 foreach($post as $p){
                     //verifichiamo che n_prodotti non superi spazio disponibile
@@ -153,7 +153,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     $nome=$prodotto['nome'];
                     $fornitore=$prodotto['fornitore'];
 
-                    if($alloc <= $_SESSION['sd']){ //se c'è spazio
+                    if($alloc <= $sd){ //se c'è spazio
                         if($quantita>0){
                             $query="SELECT * FROM comprendere WHERE id_prodotto LIKE $id_prodotto AND id_ordine LIKE $id_ordine";
                             $result=mysqli_query($connection,$query);
@@ -168,18 +168,39 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                             if(!$result)
                                 echo" $query...$connection->error<br />";
                         }
-
-                        $n_prodotti+=$quantita;
-                        $_SESSION['sd']=$_SESSION['sd'] - $quantita;
                     }
                     else{
-                        echo "<p style=\"color:red\">Impossibile aggiungere <b>$quantita</b> colli di <b>$nome($id_prodotto)</b>, spazio in magazzino non sufficiente</p>";
+                        echo "<p style=\"color:red\">Impossibile aggiungere <b>$quantita</b> colli di <b>$nome($id_prodotto)</b>, spazio in magazzino non sufficiente </p>";
                             continue;
                     }
                 }
             }
 
           ?>
+
+        <?php
+            if(isset($_POST['rimuovi'])){
+                $post=$_POST['prodotti'];
+                $id_ordine=$_SESSION['ordine'];
+                foreach($post as $prodotto){
+                    $id_prodotto= $prodotto;
+                    echo "$id_prodotto";
+                    $quantita=$_POST[$id_prodotto];
+                    $query="SELECT quantita FROM comprendere WHERE id_prodotto LIKE $id_prodotto AND id_ordine LIKE $id_ordine";
+                    $result=mysqli_query($connection,$query);
+                    if(!$result)
+                        echo" $query...$connection->error<br />";
+                    $q= mysqli_fetch_array($result)['quantita'];
+                    if($quantita == $q)
+                        $query="DELETE FROM comprendere WHERE id_prodotto LIKE $id_prodotto AND id_ordine LIKE $id_ordine";
+                    else
+                        $query="UPDATE comprendere SET quantita= quantita - $quantita WHERE id_prodotto LIKE $id_prodotto AND id_ordine LIKE $id_ordine";
+                    $result=mysqli_query($connection,$query);
+                            if(!$result)
+                                echo" $query...$connection->error<br />";
+                }
+            }
+        ?>
 
         <?php
             $id_pv=$_SESSION['id_punto_vendita'];
@@ -258,7 +279,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 <th>Prodotto</th>
                 <th>Quantit&agrave;</th>
                 </thead><tbody>";
-                echo "<form action=\"nuovo_ordine.php\" method=\"POST\">";
+                echo "<form action=\"nuovo_ordine.php\" method=\"POST\"  onsubmit=\"return formvalidator()\">";
                 $id_ordine=$_SESSION['ordine'];
                 $query="SELECT * FROM comprendere WHERE id_ordine LIKE $id_ordine";
                 $result=mysqli_query($connection,$query);
@@ -277,7 +298,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     $fornitore=$prodotto['fornitore'];
                     echo "<tr>
                         <td><input type=\"checkbox\" name=\"prodotti[]\" value=\"$id_prodotto\">
-                        <input name=\"$id_p\" value=\"0\" type=\"number\" min=\"0\" max=\"$quantita\"></td>
+                        <input name=\"$id_prodotto\" value=\"0\" type=\"number\" min=\"0\" max=\"$quantita\"></td>
                         <td>$nome, $fornitore ($id_prodotto)</td>
                         <td>$quantita</td></tr>";
                 }

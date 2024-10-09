@@ -83,6 +83,52 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
         <body>
             <?php
+                if(isset($_POST['svuota'])){
+                    //rimuoviamo tutti i prodotti dal magazzino e aggiungiamoli a vendita
+                    $id_pv=$_SESSION['id_punto_vendita'];
+                    $id_magazzino=mysqli_fetch_array(getMagazzino($id_pv,$connection))['id_magazzino'];
+                    $query="SELECT * FROM in_magazzino WHERE id_magazzino LIKE $id_magazzino";
+                    $result=mysqli_query($connection,$query);
+                    if(!$result){
+                        echo" $query...$connection->error<br />";
+                    }
+                    foreach($result as $prodotto){
+                        $id_prodotto= $prodotto['id_prodotto'];
+                        $q = $prodotto['quantita'];
+                        $query= "SELECT prezzo FROM prodotto WHERE id_prodotto LIKE $id_prodotto";
+                        $result=mysqli_query($connection,$query);
+                        if(!$result){
+                            echo" $query...$connection->error<br />";
+                        }
+                        $price=mysqli_fetch_array($result)['prezzo'];
+                        $query="SELECT * FROM vendita WHERE id_prodotto LIKE $id_prodotto AND id_punto_vendita LIKE $id_pv";
+                            $result=mysqli_query($connection,$query);
+                            if(!$result){
+                                echo" $query...$connection->error<br />";
+                                break;
+                            }
+                            else if(mysqli_num_rows($result)>0){ //prodotto gia presente
+                                $totale=$price*$q;
+                                $query= "UPDATE vendita SET quantita= quantita + $q, totale= totale+ $totale WHERE id_prodotto LIKE $id_prodotto AND id_punto_vendita LIKE $id_pv";
+                                $result=mysqli_query($connection,$query);
+                                if(!$result)
+                                    echo" $query...$connection->error<br />";
+                            }
+                            else{ //prodotto non presente
+                                $totale=$price*$q;
+                                $query="INSERT INTO vendita (totale, quantita, id_prodotto, id_punto_vendita) VALUES ($totale, $q, $id_prodotto, $id_pv)";
+                                $result=mysqli_query($connection,$query);
+                                if(!$result)
+                                    echo" $query...$connection->error<br />";
+                            }
+                    }
+                    echo "<div class=\"alert alert-success\" role=\"alert\">
+                   Tutti i prodotti sono stati venduti
+                  </div>";
+                }
+            ?>
+
+            <?php
             echo "<div id=\"header\">";
                 echo "<h3> Finestra vendite</h3>";
                 echo "<h3>Console       </h3>";
@@ -165,6 +211,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             echo "<div id=\"center\">
                 <form method=\"POST\" action=\"simulatore.php\" name=\"simulazione\">
                     <input class=\"start-btn\" type=\"submit\" name=\"start\" value=\"Avvia simulazione\"> <br />
+                    <input class=\"stop-btn\" type=\"submit\" name=\"svuota\" value=\"Svuota magazzino\"> <br />
                 </form>
 
                 </div>";
